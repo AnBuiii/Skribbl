@@ -8,9 +8,6 @@ class SkribblApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        KoinInit().init {
-//            androidLogger(level = if (BuildConfig.DEBUG) Level.ERROR else Level.NONE)
-//            androidContext(androidContext = this@BloomApp)
-        }
+        KoinInit().init()
     }
 }

@@ -8,15 +8,5 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 class MainViewModel : ScreenModel {
-    private val _text = MutableStateFlow("")
 
-    val text = _text.stateIn(
-        screenModelScope,
-        SharingStarted.WhileSubscribed(1000L),
-        ""
-    )
-
-    fun changeText(value: String) {
-        _text.update { value }
-    }
 }

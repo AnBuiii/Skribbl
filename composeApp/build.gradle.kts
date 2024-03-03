@@ -33,10 +33,9 @@ kotlin {
         }
 
         commonMain.dependencies {
-
-            //            api(libs.koin.bom)
             api(libs.koin.core)
             api(libs.koin.compose)
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
@@ -48,7 +47,7 @@ kotlin {
             implementation(libs.voyager.bottomSheetNavigator)
             implementation(libs.voyager.transitions)
             implementation(libs.voyager.tabNavigator)
-//            implementation(libs.voyager.koin)
+            implementation(libs.voyager.koin)
         }
 
         androidMain.dependencies {

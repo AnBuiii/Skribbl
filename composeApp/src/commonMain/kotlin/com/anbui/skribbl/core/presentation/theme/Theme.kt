@@ -1,4 +1,4 @@
-package com.anbui.skribbl.core.theme
+package com.anbui.skribbl.core.presentation.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

@@ -1,4 +1,4 @@
-package com.anbui.skribbl.core.theme
+package com.anbui.skribbl.core.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
