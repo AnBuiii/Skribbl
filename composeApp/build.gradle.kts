@@ -48,6 +48,9 @@ kotlin {
             implementation(libs.voyager.transitions)
             implementation(libs.voyager.tabNavigator)
             implementation(libs.voyager.koin)
+
+            api(libs.napier)
+
         }
 
         androidMain.dependencies {

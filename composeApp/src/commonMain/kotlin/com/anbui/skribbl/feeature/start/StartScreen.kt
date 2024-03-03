@@ -8,14 +8,13 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import cafe.adriel.voyager.core.model.ScreenModel
 import com.anbui.skribbl.core.utils.Greeting
+import io.github.aakira.napier.Napier
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
@@ -25,11 +24,16 @@ import skribbl.composeapp.generated.resources.compose_multiplatform
 
 @Composable
 fun StartScreen(
-    screenModel: ScreenModel = koinInject()
+    screenModel: StartScreenModel = koinInject()
 ) {
-    var showContent by remember { mutableStateOf(false) }
+    val showContent by screenModel.showContent.collectAsState()
+
     Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-        Button(onClick = { showContent = !showContent }) {
+        Button(onClick = {
+            screenModel.toggle()
+            Napier.v("Toggle" )
+        }
+        ) {
             Text(stringResource(Res.string.app_name))
         }
         AnimatedVisibility(showContent) {
