@@ -1,4 +1,4 @@
-package theme
+package com.anbui.skribbl.core.theme
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontFamily

@@ -1,3 +1,5 @@
+package com.anbui.skribbl
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -19,12 +21,18 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import skribbl.composeapp.generated.resources.Res
 import skribbl.composeapp.generated.resources.app_name
 import skribbl.composeapp.generated.resources.compose_multiplatform
-import theme.SkribblTheme
+import com.anbui.skribbl.core.theme.SkribblTheme
+import com.anbui.skribbl.core.utils.Greeting
+import org.koin.core.context.KoinContext
+import org.koin.compose.KoinContext
+import org.koin.compose.koinInject
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 @Preview
-fun App() {
+fun SkribblApp() {
+
+    KoinContext
     SkribblTheme {
         var showContent by remember { mutableStateOf(false) }
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {

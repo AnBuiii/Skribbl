@@ -1,4 +1,4 @@
-package theme
+package com.anbui.skribbl.core.theme
 
 import androidx.compose.ui.unit.dp
 

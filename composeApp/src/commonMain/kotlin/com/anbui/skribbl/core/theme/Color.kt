@@ -1,8 +1,8 @@
-package theme
+package com.anbui.skribbl.core.theme
 
 import androidx.compose.ui.graphics.Color
 
-object SkribblColor {
+object Color {
     val Light_Orange = Color(0xFFCC80)
     val Red = Color(0xE53935)
     val Orange = Color(0xFFA726)

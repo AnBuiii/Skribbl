@@ -1,4 +1,4 @@
-package theme
+package com.anbui.skribbl.core.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable

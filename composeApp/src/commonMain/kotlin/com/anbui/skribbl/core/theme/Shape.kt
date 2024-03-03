@@ -1,4 +1,4 @@
-package theme
+package com.anbui.skribbl.core.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes
