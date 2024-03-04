@@ -32,6 +32,6 @@ fun commonModule(): Module = module {
         StartScreenModel(get(), get())
     }
     single<GameScreenModel> {
-        GameScreenModel()
+        GameScreenModel(get())
     }
 }
