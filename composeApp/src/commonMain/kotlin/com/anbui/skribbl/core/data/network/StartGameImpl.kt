@@ -7,6 +7,7 @@ import com.anbui.skribbl.domain.repository.StartGameService
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
@@ -16,12 +17,13 @@ class StartGameImpl(
 ) : StartGameService {
     override suspend fun createRoom(name: String, maxPlayer: Int): Boolean {
         return try {
-            val respond = client.get(CREATE_ROOM_ROUTE) {
+            val respond = client.post(CREATE_ROOM_ROUTE) {
                 contentType(ContentType.Application.Json)
                 setBody(CreateRoomRequest(name, maxPlayer))
             }.body<BasicApiResponse>()
             respond.isSuccessful
         } catch (e: Exception){ //TODO
+            e.printStackTrace()
             false
         }
     }
