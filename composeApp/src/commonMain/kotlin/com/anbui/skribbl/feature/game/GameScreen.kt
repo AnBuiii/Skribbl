@@ -47,8 +47,5 @@ fun GameScreen(
                 )
             )
         }
-
-
     }
-
 }
