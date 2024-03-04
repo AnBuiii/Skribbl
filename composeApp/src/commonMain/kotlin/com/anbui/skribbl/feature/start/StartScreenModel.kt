@@ -1,7 +1,8 @@
-package com.anbui.skribbl.feeature.start
+package com.anbui.skribbl.feature.start
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.anbui.skribbl.core.utils.DispatcherProvider
 import com.anbui.skribbl.domain.repository.TestRepository
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +12,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class StartScreenModel(
-    private val testRepository: TestRepository
+    private val testRepository: TestRepository,
+    private val dispatcherProvider: DispatcherProvider
 ) : ScreenModel {
 
     private val _showContent = MutableStateFlow(false)
@@ -23,7 +25,7 @@ class StartScreenModel(
 
     fun toggle() {
         _showContent.update { !it }
-        screenModelScope.launch {
+        screenModelScope.launch(dispatcherProvider.io) {
             val a = testRepository.getEmployee()
             Napier.d(a.toString())
         }

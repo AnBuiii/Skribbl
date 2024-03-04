@@ -1,4 +1,4 @@
-package com.anbui.skribbl.feeature.start
+package com.anbui.skribbl.feature.start
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
