@@ -14,6 +14,7 @@ compose = "1.6.2"
 compose-plugin = "1.6.0"
 junit = "4.13.2"
 kotlin = "1.9.22"
+statelyCommon = "1.2.5"
 voyager = "1.0.0"
 koin-core = "3.5.3"
 koin-compose = "1.1.2"
@@ -40,8 +41,8 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = 
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
 
 # koin
-koin-core = { module = "io.insert-koin:koin-core" , version.ref = "koin-core"}
-koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-compose"}
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin-core" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-compose" }
 
 # voyager
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
@@ -49,6 +50,7 @@ voyager-bottomSheetNavigator = { module = "cafe.adriel.voyager:voyager-bottom-sh
 voyager-tabNavigator = { module = "cafe.adriel.voyager:voyager-tab-navigator", version.ref = "voyager" }
 voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
 voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
+stately-common = { module = "co.touchlab:stately-common", version.ref = "statelyCommon" }
 
 # logging
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
@@ -56,10 +58,9 @@ napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 # ktor
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-client-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
-
-
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

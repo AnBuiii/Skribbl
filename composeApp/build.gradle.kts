@@ -32,12 +32,24 @@ kotlin {
             }
         }
 
+
+        androidMain.dependencies {
+            implementation(libs.compose.ui.tooling.preview)
+            implementation(libs.androidx.activity.compose)
+
+            // ktor engine
+            implementation(libs.ktor.client.cio)
+        }
+
+
+
         commonMain.dependencies {
             api(libs.koin.core)
             api(libs.koin.compose)
 
             implementation(compose.runtime)
             implementation(compose.foundation)
+            implementation(compose.material)
             implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
@@ -48,19 +60,18 @@ kotlin {
             implementation(libs.voyager.transitions)
             implementation(libs.voyager.tabNavigator)
             implementation(libs.voyager.koin)
+            implementation(libs.stately.common) // for voyager koin error when build ios
 
             api(libs.napier)
 
             implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.cio)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.client.serialization)
-
         }
 
-        androidMain.dependencies {
-            implementation(libs.compose.ui.tooling.preview)
-            implementation(libs.androidx.activity.compose)
+        iosMain.dependencies {
+            // ktor engine
+            implementation(libs.ktor.client.darwin)
         }
     }
 }
@@ -72,7 +83,6 @@ android {
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/resources")
     sourceSets["main"].resources.srcDirs("src/commonMain/resources")
-
 
     defaultConfig {
         applicationId = "com.anbui.skribbl"
@@ -92,8 +102,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     dependencies {
         debugImplementation(libs.compose.ui.tooling)

@@ -1,8 +1,11 @@
 package com.anbui.skribbl.di
 
-import org.koin.core.module.Module
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.darwin.Darwin
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
 import org.koin.dsl.module
 
-actual fun platformModule(): Module = module {
+actual fun platformModule() = module {
 
 }
