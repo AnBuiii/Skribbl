@@ -1,11 +1,13 @@
 package com.anbui.skribbl.di
 
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.darwin.Darwin
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.serialization.kotlinx.json.json
+import com.russhwolf.settings.NSUserDefaultsSettings
+import com.russhwolf.settings.Settings
 import org.koin.dsl.module
+import platform.Foundation.NSUserDefaults
 
 actual fun platformModule() = module {
-
+    single<Settings> {
+        val delegate = NSUserDefaults.standardUserDefaults
+        NSUserDefaultsSettings(delegate)
+    }
 }

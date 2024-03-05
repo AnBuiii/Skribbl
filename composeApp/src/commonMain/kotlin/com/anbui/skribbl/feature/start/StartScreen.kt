@@ -27,11 +27,12 @@ fun StartScreen(
     screenModel: StartScreenModel = koinInject()
 ) {
     val showContent by screenModel.showContent.collectAsState()
+    val name by screenModel.name.collectAsState()
 
     Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Button(onClick = {
             screenModel.toggle()
-            Napier.v("Toggle" )
+            Napier.v("Toggle")
         }
         ) {
             Text(stringResource(Res.string.app_name))
@@ -44,7 +45,7 @@ fun StartScreen(
             ) {
                 Image(painterResource(Res.drawable.compose_multiplatform), null)
                 Text(
-                    "Compose: $greeting",
+                    "$name: $greeting",
                     style = MaterialTheme.typography.bodyMedium
                 )
             }

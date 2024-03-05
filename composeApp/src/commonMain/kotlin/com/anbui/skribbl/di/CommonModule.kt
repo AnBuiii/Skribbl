@@ -1,9 +1,12 @@
 package com.anbui.skribbl.di
 
+import com.anbui.skribbl.core.data.local.SettingManager
 import com.anbui.skribbl.core.data.network.StartGameImpl
 import com.anbui.skribbl.core.data.network.TestRepositoryImpl
+import com.anbui.skribbl.core.repository.SettingRepositoryImpl
 import com.anbui.skribbl.core.utils.Constants
 import com.anbui.skribbl.core.utils.DispatcherProvider
+import com.anbui.skribbl.domain.repository.SettingRepository
 import com.anbui.skribbl.domain.repository.StartGameService
 import com.anbui.skribbl.domain.repository.TestRepository
 import com.anbui.skribbl.feature.game.GameScreenModel
@@ -27,8 +30,8 @@ fun commonModule(): Module = module {
     // HttpClient
     single<HttpClient> {
         HttpClient(engine) {
-            install(Logging){
-                logger = object: Logger {
+            install(Logging) {
+                logger = object : Logger {
                     override fun log(message: String) {
                         Napier.v("HTTP Client", null, message)
                     }
@@ -38,21 +41,21 @@ fun commonModule(): Module = module {
             install(ContentNegotiation) {
                 json()
             }
-            install(DefaultRequest){
+            install(DefaultRequest) {
                 url("http://${Constants.IP_DEVICE_2}:${Constants.PORT}/api/")
             }
         }
     }
 
     single<DispatcherProvider> {
-         object : DispatcherProvider {
-             override val main: CoroutineDispatcher
-                 get() = Dispatchers.Main
-             override val io: CoroutineDispatcher
-                 get() = Dispatchers.IO
-             override val default: CoroutineDispatcher
-                 get() = Dispatchers.Default
-         }
+        object : DispatcherProvider {
+            override val main: CoroutineDispatcher
+                get() = Dispatchers.Main
+            override val io: CoroutineDispatcher
+                get() = Dispatchers.IO
+            override val default: CoroutineDispatcher
+                get() = Dispatchers.Default
+        }
     }
 
 
@@ -60,15 +63,21 @@ fun commonModule(): Module = module {
     single<TestRepository> { TestRepositoryImpl(get()) }
 
     single<StartGameService> { StartGameImpl(get()) }
+    single<SettingRepository> { SettingRepositoryImpl(get()) }
 
 
     // ViewModel
     single<StartScreenModel> {
-        StartScreenModel(get(), get())
+        StartScreenModel(
+            settingRepository = get(),
+            startGameService = get(),
+            dispatcherProvider = get()
+        )
     }
     single<GameScreenModel> {
         GameScreenModel(get())
     }
 
-    // ViewModel
+    // Setting
+    single<SettingManager> { SettingManager(settings = get()) }
 }
