@@ -18,7 +18,6 @@ internal sealed interface SkribblTab {
             StartScreen()
         }
 
-
         override val options: TabOptions
             @Composable
             get() {

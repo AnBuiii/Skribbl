@@ -9,8 +9,11 @@ import com.anbui.skribbl.core.utils.DispatcherProvider
 import com.anbui.skribbl.domain.repository.SettingRepository
 import com.anbui.skribbl.domain.repository.StartGameService
 import com.anbui.skribbl.domain.repository.TestRepository
+import com.anbui.skribbl.feature.createRoom.CreateRoomScreenModel
 import com.anbui.skribbl.feature.game.GameScreenModel
+import com.anbui.skribbl.feature.selectRoom.SelectRoomScreenModel
 import com.anbui.skribbl.feature.start.StartScreenModel
+import com.anbui.skribbl.feature.username.UsernameScreenModel
 import com.anbui.skribbl.platform.engine
 import io.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
@@ -67,6 +70,18 @@ fun commonModule(): Module = module {
 
 
     // ViewModel
+    single<UsernameScreenModel> {
+        UsernameScreenModel()
+    }
+
+//    single<SelectRoomScreenModel>{
+//        SelectRoomScreenModel()
+//    }
+
+    factory { SelectRoomScreenModel() }
+
+    factory { CreateRoomScreenModel() }
+
     single<StartScreenModel> {
         StartScreenModel(
             settingRepository = get(),

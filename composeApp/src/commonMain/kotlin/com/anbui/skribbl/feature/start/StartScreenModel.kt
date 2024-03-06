@@ -22,7 +22,7 @@ class StartScreenModel(
         null
     )
 
-    private val _showContent = MutableStateFlow(false)
+    private val _showContent = MutableStateFlow(true)
     val showContent = _showContent.stateIn(
         screenModelScope,
         SharingStarted.WhileSubscribed(5000),
@@ -30,7 +30,7 @@ class StartScreenModel(
     )
 
     fun toggle() {
-        _showContent.update { !it }
+//        _showContent.update { !it }
         listOf("bui", "le", "hoai", "an").random().let {
             settingRepository.setName(it)
         }
