@@ -10,6 +10,7 @@ import cafe.adriel.voyager.transitions.SlideTransition
 import com.anbui.skribbl.core.presentation.theme.SkribblTheme
 import com.anbui.skribbl.core.utils.ProvideAppNavigator
 import com.anbui.skribbl.feature.game.GameScreen
+import com.anbui.skribbl.feature.username.UsernameScreen
 import org.koin.compose.KoinContext
 
 @Composable
@@ -21,7 +22,7 @@ fun FocusSkribblApp() {
                 color = MaterialTheme.colorScheme.background
             ) {
                 Navigator(
-                    screen = GameScreen(),
+                    screen = UsernameScreen(),
                     content = { navigator ->
                         ProvideAppNavigator(
                             navigator = navigator,
