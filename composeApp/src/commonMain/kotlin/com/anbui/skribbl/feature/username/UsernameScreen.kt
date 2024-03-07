@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -36,6 +37,12 @@ class UsernameScreen : Screen {
         val username by screenModel.username.collectAsState()
 
         val localFocusManager = LocalFocusManager.current
+        val success by screenModel.success.collectAsState()
+
+        LaunchedEffect(success) {
+            navigator.push(SelectRoomScreen())
+        }
+
         Column(
             modifier = Modifier.pointerInput(Unit) {
                 detectTapGestures(onTap = {
@@ -63,7 +70,7 @@ class UsernameScreen : Screen {
                 Spacer(modifier = Modifier.height(SpaceMedium))
 
                 SkribblTextButton("Next", modifier = Modifier.align(Alignment.End)) {
-                    navigator.push(SelectRoomScreen())
+                    screenModel.next()
                 }
             }
         }

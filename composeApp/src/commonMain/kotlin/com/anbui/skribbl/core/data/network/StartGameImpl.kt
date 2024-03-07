@@ -78,6 +78,7 @@ class StartGameImpl(
             val roomResponse = response.body<List<RoomResponse>>()
 
             return Resource.Success(roomResponse)
+
         } catch (e: IOException) {
             return Resource.Error(null, "Please check your internet")
         } catch (e: Exception) {

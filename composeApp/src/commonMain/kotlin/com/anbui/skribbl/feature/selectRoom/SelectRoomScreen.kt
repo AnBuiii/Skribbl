@@ -34,7 +34,6 @@ class SelectRoomScreen : Screen {
     @Composable
     override fun Content() {
         val screenModel: SelectRoomScreenModel = koinInject()
-        val localFocusManager = LocalFocusManager.current
         val navigator = LocalNavigator.currentOrThrow
 
         val roomQuery by screenModel.roomQuery.collectAsState()
@@ -55,7 +54,7 @@ class SelectRoomScreen : Screen {
                     hint = "Search for room"
                 )
                 IconButton(
-                    onClick = {}
+                    onClick = screenModel::searchRoom
                 ) {
                     Icon(Icons.Default.CheckCircle, contentDescription = null)
                 }
