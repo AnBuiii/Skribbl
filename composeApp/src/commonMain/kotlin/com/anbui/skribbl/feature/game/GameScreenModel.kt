@@ -5,8 +5,6 @@ import androidx.compose.ui.graphics.Path
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.anbui.skribbl.core.utils.DispatcherProvider
-import com.anbui.skribbl.core.utils.lineTo
-import com.anbui.skribbl.core.utils.moveTo
 import com.anbui.skribbl.core.utils.toPath
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,16 +23,15 @@ class GameScreenModel(
         .map {
             it.toPath()
         }
-
         .stateIn(
             screenModelScope,
             SharingStarted.WhileSubscribed(5_000L),
-            null
+            Path()
         )
 
 
     private val _drawnPath = MutableStateFlow<List<Path>>(emptyList())
-    val drawn = _drawnPath
+    val drawnPath = _drawnPath
         .map { paths ->
             Path().apply {
                 paths.forEach { p ->
@@ -49,10 +46,18 @@ class GameScreenModel(
             Path()
         )
 
+    private val _chat = MutableStateFlow("")
+    val chat = _chat
+        .stateIn(
+            screenModelScope,
+            SharingStarted.WhileSubscribed(5_000),
+            ""
+        )
+
     /**
      * start drawing at [offset]
      */
-    fun onStart(offset: Offset) {
+    fun onBeginDraw(offset: Offset) {
         Napier.d { offset.toString() }
         _drawingPath.update {
             it + offset
@@ -71,7 +76,7 @@ class GameScreenModel(
 
     }
 
-    fun onFinishDraw() {
+    fun onEndDraw() {
         Napier.d { "stop" }
 
         val newPath = _drawingPath.value.toPath()
@@ -81,4 +86,13 @@ class GameScreenModel(
             _drawingPath.update { emptyList() }
         }
     }
+
+    fun onChangeChat(value: String) {
+        _chat.update { value }
+    }
+
+    fun sendChat(){
+        //
+    }
 }
+

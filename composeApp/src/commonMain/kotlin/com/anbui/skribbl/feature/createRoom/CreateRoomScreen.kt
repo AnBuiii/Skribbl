@@ -15,10 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.anbui.skribbl.core.presentation.component.SkribblTextButton
 import com.anbui.skribbl.core.presentation.component.SkribblTextField
 import com.anbui.skribbl.core.presentation.theme.SpaceLarge
 import com.anbui.skribbl.core.presentation.theme.SpaceMedium
+import com.anbui.skribbl.feature.game.GameScreen
 import org.koin.compose.koinInject
 
 class CreateRoomScreen : Screen {
@@ -26,6 +29,7 @@ class CreateRoomScreen : Screen {
     override fun Content() {
         val localFocusManager = LocalFocusManager.current
         val screenModel: CreateRoomScreenModel = koinInject()
+        val navigator = LocalNavigator.currentOrThrow
 
         val roomName by screenModel.roomName.collectAsState()
         val roomSize by screenModel.roomSize.collectAsState()
@@ -62,7 +66,7 @@ class CreateRoomScreen : Screen {
                     )
 
                     SkribblTextButton("Create") {
-
+                        navigator.push(GameScreen())
                     }
                 }
             }

@@ -1,7 +1,6 @@
 package com.anbui.skribbl
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -10,15 +9,9 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
 import com.anbui.skribbl.core.presentation.theme.SkribblTheme
 import com.anbui.skribbl.core.utils.ProvideAppNavigator
-import com.anbui.skribbl.feature.createRoom.CreateRoomScreen
-import com.anbui.skribbl.feature.createRoom.CreateRoomScreenModel
-import com.anbui.skribbl.feature.selectRoom.SelectRoomScreen
-import com.anbui.skribbl.feature.username.UsernameScreen
-import com.anbui.skribbl.main.MainScreen
-import org.jetbrains.compose.resources.ExperimentalResourceApi
+import com.anbui.skribbl.feature.game.GameScreen
 import org.koin.compose.KoinContext
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun FocusSkribblApp() {
     KoinContext {
@@ -28,7 +21,7 @@ fun FocusSkribblApp() {
                 color = MaterialTheme.colorScheme.background
             ) {
                 Navigator(
-                    screen = CreateRoomScreen(),
+                    screen = GameScreen(),
                     content = { navigator ->
                         ProvideAppNavigator(
                             navigator = navigator,
