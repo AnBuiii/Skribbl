@@ -1,6 +1,7 @@
 package com.anbui.skribbl.main
 
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -10,6 +11,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
 import com.anbui.skribbl.core.utils.ProvideAppNavigator
 import com.anbui.skribbl.feature.username.UsernameScreen
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.filterNotNull
 import org.koin.compose.koinInject
 
@@ -18,9 +20,14 @@ fun MainScreen() {
     val hostState = remember { SnackbarHostState() }
     val screenModel: MainScreenModel = koinInject()
     LaunchedEffect(Unit) {
-        screenModel.snackBarRepository.message.filterNotNull().collect {
-            hostState.showSnackbar(it)
-        }
+        screenModel.snackBarRepository.message
+            .filterNotNull().collect {
+                hostState.showSnackbar(
+                    it,
+                    withDismissAction = true,
+                    duration = SnackbarDuration.Short
+                )
+            }
     }
     Scaffold(
         snackbarHost = {
