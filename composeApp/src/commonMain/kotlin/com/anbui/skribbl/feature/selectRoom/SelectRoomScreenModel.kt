@@ -4,6 +4,7 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.anbui.skribbl.core.utils.Resource
 import com.anbui.skribbl.domain.model.Room
+import com.anbui.skribbl.domain.model.RoomResponse
 import com.anbui.skribbl.domain.model.mockRooms
 import com.anbui.skribbl.domain.repository.SnackBarRepository
 import com.anbui.skribbl.domain.repository.StartGameService
@@ -25,7 +26,7 @@ class SelectRoomScreenModel(
         ""
     )
 
-    val _rooms = MutableStateFlow<List<Room>>(mockRooms)
+    private val _rooms = MutableStateFlow(mockRooms)
     val room = _rooms.stateIn(
         screenModelScope,
         SharingStarted.WhileSubscribed(5_000),
@@ -48,9 +49,13 @@ class SelectRoomScreenModel(
                 }
 
                 is Resource.Success -> {
-
+                    _rooms.update { resource.data?.map { it.toRoom() } ?: emptyList() }
                 }
             }
         }
     }
+}
+
+fun RoomResponse.toRoom(): Room {
+    return Room(roomName = this.name, playerCount = playerCount, roomSize = maxPlayer)
 }
