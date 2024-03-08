@@ -8,7 +8,7 @@ import com.russhwolf.settings.set
 import kotlinx.coroutines.flow.Flow
 
 class SettingManager(
-    private val settings: Settings
+    settings: Settings
 ) {
     var observableSettings: ObservableSettings = settings as ObservableSettings
 

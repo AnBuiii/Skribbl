@@ -24,6 +24,7 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -47,7 +48,12 @@ fun commonModule(): Module = module {
                 json()
             }
             install(DefaultRequest) {
-                url("http://${Constants.IP_DEVICE_2}:${Constants.PORT}/api/")
+                url("http://${Constants.IP_DEVICE_1}:${Constants.PORT}")
+            }
+
+            install(WebSockets) {
+
+                pingInterval = 15
             }
         }
     }
@@ -69,7 +75,7 @@ fun commonModule(): Module = module {
 
 
     // GameService
-    single<SocketService> { SocketServiceImpl(get(), get()) }
+    single<SocketService> { SocketServiceImpl(get(), get(), get()) }
 
 
     // ViewModel
@@ -77,7 +83,7 @@ fun commonModule(): Module = module {
         UsernameScreenModel(get())
     }
 
-    factory { SelectRoomScreenModel(get(), get()) }
+    factory { SelectRoomScreenModel(get(), get(), get()) }
 
     factory { CreateRoomScreenModel() }
 

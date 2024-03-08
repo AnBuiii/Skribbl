@@ -7,8 +7,10 @@ import com.anbui.skribbl.domain.model.Room
 import com.anbui.skribbl.domain.model.RoomResponse
 import com.anbui.skribbl.domain.model.mockRooms
 import com.anbui.skribbl.domain.repository.SnackBarRepository
+import com.anbui.skribbl.domain.repository.SocketService
 import com.anbui.skribbl.domain.repository.StartGameService
 import io.github.aakira.napier.Napier
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -17,7 +19,8 @@ import kotlinx.coroutines.launch
 
 class SelectRoomScreenModel(
     private val startGameService: StartGameService,
-    private val snackBarRepository: SnackBarRepository
+    private val snackBarRepository: SnackBarRepository,
+    private val socketService: SocketService
 ) : ScreenModel {
     private val _roomQuery = MutableStateFlow("")
     val roomQuery = _roomQuery.stateIn(
@@ -32,6 +35,8 @@ class SelectRoomScreenModel(
         SharingStarted.WhileSubscribed(5_000),
         emptyList()
     )
+
+    private var job: Job? = null
 
 
     fun changeRoomQuery(value: String) {
@@ -52,6 +57,20 @@ class SelectRoomScreenModel(
                     _rooms.update { resource.data?.map { it.toRoom() } ?: emptyList() }
                 }
             }
+        }
+    }
+
+    fun connectToSocketServer() {
+        if (job != null) {
+            job?.cancel()
+            job = screenModelScope.launch {
+                socketService.connect()
+                socketService.data.collect {
+                    Napier.d { it.toString() }
+                }
+            }
+        } else {
+            Napier.d { "connected" }
         }
     }
 }

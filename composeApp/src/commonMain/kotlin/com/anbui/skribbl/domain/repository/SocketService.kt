@@ -13,7 +13,7 @@ interface SocketService {
     /**
      * try connect to server
      */
-    fun connect()
+    suspend fun connect()
 
     suspend fun <T> send(data: T)
 
