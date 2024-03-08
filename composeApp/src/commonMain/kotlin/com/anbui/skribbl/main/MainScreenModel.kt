@@ -1,17 +1,22 @@
 package com.anbui.skribbl.main
 
+import androidx.compose.material3.SnackbarHostState
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.anbui.skribbl.domain.repository.SnackBarRepository
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 class MainScreenModel(
-    val snackBarRepository: SnackBarRepository
+    private val snackBarRepository: SnackBarRepository
 ) : ScreenModel {
-//    val snackBarMessage = snackBarRepository.message.sha(
-//        screenModelScope,
-//        SharingStarted.WhileSubscribed(5_000),
-//        null
-//    )
+    val hostState = SnackbarHostState()
+
+    init {
+        screenModelScope.launch {
+            snackBarRepository.message.collect { message ->
+                hostState.showSnackbar(message)
+            }
+        }
+
+    }
 }
