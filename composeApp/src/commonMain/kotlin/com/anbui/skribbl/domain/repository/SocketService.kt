@@ -1,6 +1,7 @@
 package com.anbui.skribbl.domain.repository
 
 import com.anbui.skribbl.core.data.remote.response.message.BaseModel
+import com.anbui.skribbl.core.data.remote.websocket.SocketServiceImpl
 import io.ktor.websocket.CloseReason
 import kotlinx.coroutines.flow.Flow
 
@@ -11,6 +12,11 @@ interface SocketService {
     val data: Flow<BaseModel>
 
     /**
+     * Current state of service
+     */
+    val state: Flow<STATE>
+
+    /**
      * try connect to server
      */
     suspend fun connect()
@@ -18,4 +24,8 @@ interface SocketService {
     suspend fun <T> send(data: T)
 
     suspend fun disconnect(reason: CloseReason?)
+
+    enum class STATE {
+        READY, ONGOING, ERROR
+    }
 }

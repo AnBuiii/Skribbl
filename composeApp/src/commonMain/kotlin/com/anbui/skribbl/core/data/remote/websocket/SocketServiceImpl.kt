@@ -16,11 +16,10 @@ import io.ktor.websocket.DefaultWebSocketSession
 import io.ktor.websocket.Frame
 import io.ktor.websocket.close
 import io.ktor.websocket.readText
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -30,16 +29,23 @@ class SocketServiceImpl(
     private val settingRepository: SettingRepository
 ) : SocketService {
 
+
     override val data: Flow<BaseModel>
-        get() = channel.consumeAsFlow()
+        get() = _data
+
+    override val state: Flow<SocketService.STATE>
+        get() = _state
 
 
-    private val channel = Channel<BaseModel>(8)
-    private var job: Job? = null
+    private val _data = MutableSharedFlow<BaseModel>()
+
+    private val _state = MutableStateFlow(SocketService.STATE.READY)
+
     private var session: DefaultWebSocketSession? = null
 
     override suspend fun connect() {
         try {
+            _state.emit(SocketService.STATE.ONGOING)
             client.webSocket(
                 "/ws/draw",
                 request = {
@@ -52,17 +58,19 @@ class SocketServiceImpl(
                         val message = frame.readText()
                         val payload =
                             BaseSerializerModule.baseJson.decodeFromString<BaseModel>(message)
-                        channel.send(payload)
+                        _data.emit(payload)
                     }
                 }
 
             }
         } catch (e: IOException) {
-            Napier.d { "INTERNET ERROR" }
-            // internet
-            e.printStackTrace()
+            Napier.d { "service INTERNET ERROR $e" }
+            _state.emit(SocketService.STATE.ERROR)
         } catch (e: Exception) {
-            e.printStackTrace()
+            Napier.d { "service unknown error $e" }
+            _state.emit(SocketService.STATE.ERROR)
+        } finally {
+            _state.emit(SocketService.STATE.READY)
         }
 
     }
@@ -85,9 +93,7 @@ class SocketServiceImpl(
         val closeReason = reason ?: CloseReason(CloseReason.Codes.VIOLATED_POLICY, "unknown error")
         session?.close(closeReason)
         session = null
-
-        job?.cancel()
-        job = null
+        _state.emit(SocketService.STATE.ONGOING)
     }
 
 
