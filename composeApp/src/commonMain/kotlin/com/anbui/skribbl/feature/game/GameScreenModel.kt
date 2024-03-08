@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 class GameScreenModel(
     private val dispatcher: DispatcherProvider
@@ -89,6 +88,14 @@ class GameScreenModel(
         fun sendChat() {
             //
         }
+    }
+
+    fun onChangeChat(value: String) {
+        _chat.update { value }
+    }
+
+    fun sendChat() {
+
     }
 }
 

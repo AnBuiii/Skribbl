@@ -83,9 +83,15 @@ class GameScreen : Screen {
                                 .background(Color.Yellow),
                             drawnPath = drawnPath,
                             drawingPath = drawingPath,
-                            onBeginDraw = screenModel::onBeginDraw,
-                            onEndDraw = screenModel::onEndDraw,
-                            onDraw = screenModel::onDraw
+                            onBeginDraw = {
+                                screenModel.onEvent(DrawEvent.BeginDraw(it))
+                            },
+                            onEndDraw = {
+                                screenModel.onEvent(DrawEvent.EndDraw)
+                            },
+                            onDraw = {
+                                screenModel.onEvent(DrawEvent.OnDraw(it))
+                            }
 
                         )
                         Divider(thickness = 2.dp)
