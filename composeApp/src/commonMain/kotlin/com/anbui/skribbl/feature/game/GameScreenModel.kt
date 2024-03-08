@@ -20,9 +20,7 @@ class GameScreenModel(
 
     private val _drawingPath = MutableStateFlow<List<Offset>>(emptyList())
     val drawingPath = _drawingPath
-        .map {
-            it.toPath()
-        }
+        .map { it.toPath() }
         .stateIn(
             screenModelScope,
             SharingStarted.WhileSubscribed(5_000L),
@@ -57,42 +55,40 @@ class GameScreenModel(
     /**
      * start drawing at [offset]
      */
-    fun onBeginDraw(offset: Offset) {
-        Napier.d { offset.toString() }
-        _drawingPath.update {
-            it + offset
+
+    fun onEvent(event: DrawEvent) {
+        when (event) {
+            is DrawEvent.BeginDraw -> {
+                Napier.d { event.offset.toString() }
+                _drawingPath.update {
+                    it + event.offset
+                }
+            }
+
+            is DrawEvent.EndDraw -> {
+                Napier.d { "stop" }
+
+                val newPath = _drawingPath.value.toPath()
+
+                _drawnPath.update { it + newPath }
+                _drawingPath.update { emptyList() }
+            }
+
+            is DrawEvent.OnDraw -> {
+                Napier.d { event.offset.toString() }
+                _drawingPath.update {
+                    it + event.offset
+                }
+            }
         }
 
-    }
-
-    /**
-     *
-     */
-    fun onDraw(offset: Offset) {
-        Napier.d { offset.toString() }
-        _drawingPath.update {
-            it + offset
+        fun onChangeChat(value: String) {
+            _chat.update { value }
         }
 
-    }
-
-    fun onEndDraw() {
-        Napier.d { "stop" }
-
-        val newPath = _drawingPath.value.toPath()
-
-        screenModelScope.launch(dispatcher.io) {
-            _drawnPath.update { it + newPath }
-            _drawingPath.update { emptyList() }
+        fun sendChat() {
+            //
         }
-    }
-
-    fun onChangeChat(value: String) {
-        _chat.update { value }
-    }
-
-    fun sendChat(){
-        //
     }
 }
 
