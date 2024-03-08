@@ -5,7 +5,7 @@ import com.anbui.skribbl.core.data.remote.repository.StartGameImpl
 import com.anbui.skribbl.core.data.remote.websocket.SocketServiceImpl
 import com.anbui.skribbl.core.repository.SettingRepositoryImpl
 import com.anbui.skribbl.core.repository.SnackBarRepositoryImpl
-import com.anbui.skribbl.core.utils.Constants
+import com.anbui.skribbl.core.utils.APIConstant
 import com.anbui.skribbl.core.utils.DispatcherProvider
 import com.anbui.skribbl.domain.repository.SettingRepository
 import com.anbui.skribbl.domain.repository.SnackBarRepository
@@ -48,12 +48,14 @@ fun commonModule(): Module = module {
                 json()
             }
             install(DefaultRequest) {
-                url("http://${Constants.IP_DEVICE_1}:${Constants.PORT}")
+                url {
+                    host = APIConstant.HOST_DEVICE_2
+                    port = APIConstant.PORT
+                }
             }
 
             install(WebSockets) {
-
-                pingInterval = 15
+                pingInterval = 15_000
             }
         }
     }

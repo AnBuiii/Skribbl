@@ -61,7 +61,7 @@ class SelectRoomScreenModel(
     }
 
     fun connectToSocketServer() {
-        if (job != null) {
+        if (job == null) {
             job?.cancel()
             job = screenModelScope.launch {
                 socketService.connect()

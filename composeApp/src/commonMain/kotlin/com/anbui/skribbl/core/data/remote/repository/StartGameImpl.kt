@@ -1,9 +1,9 @@
 package com.anbui.skribbl.core.data.remote.repository
 
 import com.anbui.skribbl.core.data.remote.response.BasicApiResponse
-import com.anbui.skribbl.core.utils.Constants.CREATE_ROOM_ROUTE
-import com.anbui.skribbl.core.utils.Constants.GET_ROOM_ROUTE
-import com.anbui.skribbl.core.utils.Constants.JOIN_ROOM_ROUTE
+import com.anbui.skribbl.core.utils.APIConstant.CREATE_ROOM_ROUTE
+import com.anbui.skribbl.core.utils.APIConstant.GET_ROOM_ROUTE
+import com.anbui.skribbl.core.utils.APIConstant.JOIN_ROOM_ROUTE
 import com.anbui.skribbl.core.utils.Resource
 import com.anbui.skribbl.domain.model.RoomResponse
 import com.anbui.skribbl.domain.model.message.CreateRoomRequest

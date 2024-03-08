@@ -5,6 +5,7 @@ import com.anbui.skribbl.core.utils.BaseSerializerModule
 import com.anbui.skribbl.core.utils.DispatcherProvider
 import com.anbui.skribbl.domain.repository.SettingRepository
 import com.anbui.skribbl.domain.repository.SocketService
+import io.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.websocket.webSocket
 import io.ktor.client.request.parameter
@@ -57,6 +58,7 @@ class SocketServiceImpl(
 
             }
         } catch (e: IOException) {
+            Napier.d { "INTERNET ERROR" }
             // internet
             e.printStackTrace()
         } catch (e: Exception) {
