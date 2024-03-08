@@ -1,4 +1,4 @@
-package com.anbui.skribbl.domain.model.message
+package com.anbui.skribbl.core.data.remote.response
 
 import kotlinx.serialization.Serializable
 

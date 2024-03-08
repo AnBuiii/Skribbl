@@ -1,13 +1,15 @@
 package com.anbui.skribbl.di
 
 import com.anbui.skribbl.core.data.local.SettingManager
-import com.anbui.skribbl.core.data.network.StartGameImpl
+import com.anbui.skribbl.core.data.remote.repository.StartGameImpl
+import com.anbui.skribbl.core.data.remote.websocket.SocketServiceImpl
 import com.anbui.skribbl.core.repository.SettingRepositoryImpl
 import com.anbui.skribbl.core.repository.SnackBarRepositoryImpl
 import com.anbui.skribbl.core.utils.Constants
 import com.anbui.skribbl.core.utils.DispatcherProvider
 import com.anbui.skribbl.domain.repository.SettingRepository
 import com.anbui.skribbl.domain.repository.SnackBarRepository
+import com.anbui.skribbl.domain.repository.SocketService
 import com.anbui.skribbl.domain.repository.StartGameService
 import com.anbui.skribbl.feature.createRoom.CreateRoomScreenModel
 import com.anbui.skribbl.feature.game.GameScreenModel
@@ -66,14 +68,14 @@ fun commonModule(): Module = module {
     single<SnackBarRepository> { SnackBarRepositoryImpl() }
 
 
+    // GameService
+    single<SocketService> { SocketServiceImpl(get(), get()) }
+
+
     // ViewModel
     single<UsernameScreenModel> {
         UsernameScreenModel(get())
     }
-
-//    single<SelectRoomScreenModel>{
-//        SelectRoomScreenModel()
-//    }
 
     factory { SelectRoomScreenModel(get(), get()) }
 
