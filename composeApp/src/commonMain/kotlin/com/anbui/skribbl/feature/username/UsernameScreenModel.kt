@@ -23,7 +23,7 @@ class UsernameScreenModel(
 
     init {
         screenModelScope.launch {
-            _username.update { settingRepository.getName().firstOrNull() ?: "" }
+            _username.update { settingRepository.getName() }
         }
     }
 

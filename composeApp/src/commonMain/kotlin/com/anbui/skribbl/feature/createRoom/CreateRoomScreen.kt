@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -22,6 +23,7 @@ import com.anbui.skribbl.core.presentation.component.SkribblTextField
 import com.anbui.skribbl.core.presentation.theme.SpaceLarge
 import com.anbui.skribbl.core.presentation.theme.SpaceMedium
 import com.anbui.skribbl.feature.game.GameScreen
+import com.anbui.skribbl.feature.selectRoom.ScreenState
 import org.koin.compose.koinInject
 
 class CreateRoomScreen : Screen {
@@ -33,6 +35,15 @@ class CreateRoomScreen : Screen {
 
         val roomName by screenModel.roomName.collectAsState()
         val roomSize by screenModel.roomSize.collectAsState()
+
+        LaunchedEffect(Unit) {
+            screenModel.screenState.collect { screenState ->
+                if (screenState is ScreenState.DONE) {
+                    navigator.pop()
+                }
+            }
+        }
+
         Column(
             modifier = Modifier.pointerInput(Unit) {
                 detectTapGestures(onTap = {
@@ -66,7 +77,7 @@ class CreateRoomScreen : Screen {
                     )
 
                     SkribblTextButton("Create") {
-                        navigator.push(GameScreen())
+                        screenModel.createRoom()
                     }
                 }
             }

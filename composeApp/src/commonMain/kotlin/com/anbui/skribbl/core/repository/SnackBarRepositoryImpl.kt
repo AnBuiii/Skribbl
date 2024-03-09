@@ -7,8 +7,8 @@ class SnackBarRepositoryImpl(
 
 ) : SnackBarRepository {
     override val message = MutableSharedFlow<String>()
-    override fun showSnackBar(text: String?) {
+    override suspend fun showSnackBar(text: String?) {
         if (text == null) return
-        message.tryEmit(text)
+        message.emit(text)
     }
 }

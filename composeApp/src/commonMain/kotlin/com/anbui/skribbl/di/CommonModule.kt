@@ -85,7 +85,7 @@ fun commonModule(): Module = module {
 
     factory { SelectRoomScreenModel(get(), get(), get()) }
 
-    factory { CreateRoomScreenModel() }
+    factory { CreateRoomScreenModel(get(), get()) }
 
     factory { MainScreenModel(get()) }
 

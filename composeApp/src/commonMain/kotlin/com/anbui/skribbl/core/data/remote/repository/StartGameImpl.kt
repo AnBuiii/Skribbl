@@ -45,6 +45,7 @@ class StartGameImpl(
      */
     override suspend fun joinRoom(username: String, roomName: String): Resource<Unit> {
         try {
+            println("okok")
             val response = client.get(JOIN_ROOM_ROUTE) {
                 parameter("username", username)
                 parameter("roomName", roomName)
