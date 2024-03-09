@@ -29,13 +29,11 @@ class SocketServiceImpl(
     private val settingRepository: SettingRepository
 ) : SocketService {
 
-
     override val data: Flow<BaseModel>
         get() = _data
 
     override val state: Flow<SocketService.STATE>
         get() = _state
-
 
     private val _data = MutableSharedFlow<BaseModel>()
 
@@ -61,7 +59,6 @@ class SocketServiceImpl(
                         _data.emit(payload)
                     }
                 }
-
             }
         } catch (e: IOException) {
             Napier.d { "service INTERNET ERROR $e" }
@@ -72,7 +69,6 @@ class SocketServiceImpl(
         } finally {
             _state.emit(SocketService.STATE.READY)
         }
-
     }
 
     override suspend fun <T> send(data: T) {
@@ -95,6 +91,4 @@ class SocketServiceImpl(
         session = null
         _state.emit(SocketService.STATE.ONGOING)
     }
-
-
 }

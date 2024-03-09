@@ -59,11 +59,9 @@ class StartGameImpl(
             } else {
                 Resource.Error(null, basicResponse.message)
             }
-
         } catch (e: Exception) {
             return Resource.Error(null, "Unknown error")
         }
-
     }
 
     override suspend fun getRooms(roomQuery: String): Resource<List<RoomResponse>> {
@@ -78,7 +76,6 @@ class StartGameImpl(
             val roomResponse = response.body<List<RoomResponse>>()
 
             return Resource.Success(roomResponse)
-
         } catch (e: IOException) {
             return Resource.Error(null, "Please check your internet")
         } catch (e: Exception) {

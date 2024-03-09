@@ -38,8 +38,7 @@ fun ChatSection(
         }
         LazyColumn(
             modifier = Modifier.background(Color.Yellow)
-        )
-        {
+        ) {
             items(100) {
                 AnnouncementItem("asdasdasdasd")
             }

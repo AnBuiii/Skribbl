@@ -58,10 +58,7 @@ class UsernameScreen : Screen {
                 modifier = Modifier.height(64.dp)
             )
 
-            Column(
-
-            ) {
-
+            Column {
                 SkribblTextField(
                     username,
                     onValueChange = screenModel::changeUsername,
@@ -75,5 +72,4 @@ class UsernameScreen : Screen {
             }
         }
     }
-
 }

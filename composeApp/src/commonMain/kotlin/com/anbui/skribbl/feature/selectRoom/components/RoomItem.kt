@@ -25,10 +25,10 @@ fun RoomItem(
         modifier = modifier
             .clickable { onClick() }
             .border(
-            width = 1.dp,
-            color = Color.Black,
-            shape = MaterialTheme.shapes.small
-        ).padding(SpaceMedium),
+                width = 1.dp,
+                color = Color.Black,
+                shape = MaterialTheme.shapes.small
+            ).padding(SpaceMedium),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

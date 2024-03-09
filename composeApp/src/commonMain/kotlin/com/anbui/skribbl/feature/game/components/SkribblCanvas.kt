@@ -1,7 +1,6 @@
 package com.anbui.skribbl.feature.game.components
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -35,14 +34,18 @@ fun SkribblCanvas(
             }
     ) {
         drawPath(
-            drawnPath, Color.Black, style = Stroke(
+            drawnPath,
+            Color.Black,
+            style = Stroke(
                 width = 5f,
                 pathEffect = PathEffect.cornerPathEffect(50f)
             )
         )
 
         drawPath(
-            drawingPath, Color.Black, style = Stroke(
+            drawingPath,
+            Color.Black,
+            style = Stroke(
                 width = 3f,
                 pathEffect = PathEffect.cornerPathEffect(50f)
             )

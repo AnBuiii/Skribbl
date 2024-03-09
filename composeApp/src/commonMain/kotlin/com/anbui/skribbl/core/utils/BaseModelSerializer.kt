@@ -4,6 +4,7 @@ import com.anbui.skribbl.core.data.remote.response.message.Announcement
 import com.anbui.skribbl.core.data.remote.response.message.BaseModel
 import com.anbui.skribbl.core.data.remote.response.message.ChatMessage
 import com.anbui.skribbl.core.data.remote.response.message.ChosenWord
+import com.anbui.skribbl.core.data.remote.response.message.Disconnect
 import com.anbui.skribbl.core.data.remote.response.message.DrawAction
 import com.anbui.skribbl.core.data.remote.response.message.DrawData
 import com.anbui.skribbl.core.data.remote.response.message.GameError
@@ -12,7 +13,6 @@ import com.anbui.skribbl.core.data.remote.response.message.JoinRoomHandshake
 import com.anbui.skribbl.core.data.remote.response.message.NewWords
 import com.anbui.skribbl.core.data.remote.response.message.NotBaseModel
 import com.anbui.skribbl.core.data.remote.response.message.PhaseChange
-import com.anbui.skribbl.core.data.remote.response.message.Disconnect
 import com.anbui.skribbl.core.data.remote.response.message.Ping
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule

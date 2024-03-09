@@ -26,7 +26,6 @@ class GameScreenModel(
             Path()
         )
 
-
     private val _drawnPath = MutableStateFlow<List<Path>>(emptyList())
     val drawnPath = _drawnPath
         .map { paths ->
@@ -35,7 +34,6 @@ class GameScreenModel(
                     addPath(p)
                 }
             }
-
         }
         .stateIn(
             screenModelScope,
@@ -95,7 +93,5 @@ class GameScreenModel(
     }
 
     fun sendChat() {
-
     }
 }
-

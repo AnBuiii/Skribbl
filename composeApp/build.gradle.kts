@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.detekt)
 }
 
 kotlin {
@@ -23,6 +24,10 @@ kotlin {
             baseName = "ComposeApp"
             isStatic = true
         }
+    }
+
+    dependencies {
+        detektPlugins(libs.detekt.formatting)
     }
 
     sourceSets {
@@ -114,4 +119,26 @@ android {
         debugImplementation(libs.compose.ui.tooling)
     }
 }
+
+
+tasks.named("assemble").configure {
+    dependsOn("detekt")
+}
+
+
+detekt {
+    source.setFrom(
+        "src/androidMain/kotlin",
+        "src/commonMain/kotlin"
+    )
+    toolVersion = "1.23.3"
+    config.setFrom("../config/detekt/detekt.yml")
+
+    buildUponDefaultConfig = true
+
+    ignoreFailures = false
+    parallel = true
+    autoCorrect = true
+}
+
 

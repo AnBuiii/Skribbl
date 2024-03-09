@@ -6,11 +6,10 @@ import com.anbui.skribbl.core.utils.Resource
 import com.anbui.skribbl.domain.model.Room
 import com.anbui.skribbl.domain.model.RoomResponse
 import com.anbui.skribbl.domain.model.mockRooms
+import com.anbui.skribbl.domain.repository.SettingRepository
 import com.anbui.skribbl.domain.repository.SnackBarRepository
-import com.anbui.skribbl.domain.repository.SocketService
 import com.anbui.skribbl.domain.repository.StartGameService
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
@@ -20,8 +19,15 @@ import kotlinx.coroutines.launch
 class SelectRoomScreenModel(
     private val startGameService: StartGameService,
     private val snackBarRepository: SnackBarRepository,
-    private val socketService: SocketService
+    private val settingRepository: SettingRepository
 ) : ScreenModel {
+    private val _screenState = MutableStateFlow<ScreenState>(ScreenState.READY)
+    val screenState = _screenState.stateIn(
+        screenModelScope,
+        SharingStarted.WhileSubscribed(5_000),
+        ScreenState.READY
+    )
+
     private val _roomQuery = MutableStateFlow("")
     val roomQuery = _roomQuery.stateIn(
         screenModelScope,
@@ -35,9 +41,6 @@ class SelectRoomScreenModel(
         SharingStarted.WhileSubscribed(5_000),
         emptyList()
     )
-
-    private var job: Job? = null
-
 
     fun changeRoomQuery(value: String) {
         _roomQuery.update { value }
@@ -60,19 +63,32 @@ class SelectRoomScreenModel(
         }
     }
 
-    fun connectToSocketServer() {
-        if (job == null) {
-            job?.cancel()
-            job = screenModelScope.launch {
-                socketService.connect()
-                socketService.data.collect {
-                    Napier.d { it.toString() }
+    fun joinRoom(roomName: String) {
+        if (_screenState.value is ScreenState.LOADING) return
+
+        _screenState.update { ScreenState.LOADING }
+        screenModelScope.launch {
+            val playerName = settingRepository.getName()
+            val resource = startGameService.joinRoom(playerName, roomName)
+
+            when (resource) {
+                is Resource.Error -> {
+                    snackBarRepository.showSnackBar(resource.message)
+                    _screenState.update { ScreenState.READY }
+                }
+
+                is Resource.Success -> {
+                    _screenState.update { ScreenState.DONE }
                 }
             }
-        } else {
-            Napier.d { "connected" }
         }
     }
+}
+
+sealed class ScreenState {
+    data object READY : ScreenState()
+    data object LOADING : ScreenState()
+    data object DONE : ScreenState()
 }
 
 fun RoomResponse.toRoom(): Room {

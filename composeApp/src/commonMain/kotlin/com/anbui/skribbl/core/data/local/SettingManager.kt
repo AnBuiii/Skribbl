@@ -12,7 +12,7 @@ class SettingManager(
 ) {
     var observableSettings: ObservableSettings = settings as ObservableSettings
 
-    inline fun <reified T : Any> set(key: String, value: T) {
+    fun setString(key: String, value: String) {
         observableSettings.set(key = key, value = value)
     }
 
@@ -22,6 +22,8 @@ class SettingManager(
     }
 
     companion object {
-
+        const val CLIENT_ID = "client_id"
+        const val PLAYER_NAME = "playerName"
     }
+
 }

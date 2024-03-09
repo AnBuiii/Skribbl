@@ -75,10 +75,8 @@ fun commonModule(): Module = module {
     single<SettingRepository> { SettingRepositoryImpl(get()) }
     single<SnackBarRepository> { SnackBarRepositoryImpl() }
 
-
     // GameService
     single<SocketService> { SocketServiceImpl(get(), get(), get()) }
-
 
     // ViewModel
     single<UsernameScreenModel> {

@@ -16,7 +16,8 @@ val mockRooms = listOf(
         "some name",
         3,
         8
-    ), Room(
+    ),
+    Room(
         "some name",
         3,
         8

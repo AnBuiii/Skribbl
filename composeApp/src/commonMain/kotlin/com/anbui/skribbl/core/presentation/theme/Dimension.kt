@@ -23,5 +23,3 @@ val SpaceMedium = 16.dp
 val SpaceLarge = 24.dp
 val SpaceExtraLarge = 32.dp
 val SpaceHuge = 56.dp
-
-

@@ -17,7 +17,3 @@ fun SkribblTypography(): Typography {
         )
     )
 }
-
-
-
-

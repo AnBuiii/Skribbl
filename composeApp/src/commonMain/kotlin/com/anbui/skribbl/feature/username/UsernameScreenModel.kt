@@ -42,5 +42,4 @@ class UsernameScreenModel(
         settingRepository.setName(_username.value)
         _success.update { true }
     }
-
 }

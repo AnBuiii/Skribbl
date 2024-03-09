@@ -17,6 +17,5 @@ class MainScreenModel(
                 hostState.showSnackbar(message)
             }
         }
-
     }
 }

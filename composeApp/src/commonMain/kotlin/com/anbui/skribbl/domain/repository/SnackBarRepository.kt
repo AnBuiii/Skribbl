@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 interface SnackBarRepository {
     val message: Flow<String>
 
-    suspend fun showSnackBar(text: String)
+    fun showSnackBar(text: String?)
 }

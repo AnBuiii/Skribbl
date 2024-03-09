@@ -1,8 +1,9 @@
 package com.anbui.skribbl.domain.repository
 
-import kotlinx.coroutines.flow.Flow
-
 interface SettingRepository {
-    fun getName(): Flow<String?>
+    suspend fun getName(): String
+
+    suspend fun getClientId(): String
+
     fun setName(value: String)
 }

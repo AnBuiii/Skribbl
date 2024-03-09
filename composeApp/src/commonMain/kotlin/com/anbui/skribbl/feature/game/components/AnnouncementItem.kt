@@ -19,7 +19,9 @@ fun AnnouncementItem(
 ) {
     Box(
         modifier = Modifier.border(
-            width = 1.dp, color = Color.Black, shape = MaterialTheme.shapes.large
+            width = 1.dp,
+            color = Color.Black,
+            shape = MaterialTheme.shapes.large
         ).background(Color.Yellow).padding(SpaceSmall),
         contentAlignment = Alignment.Center
     ) {
