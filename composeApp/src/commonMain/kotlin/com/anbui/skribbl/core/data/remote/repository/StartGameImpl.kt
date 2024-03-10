@@ -14,29 +14,33 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
-import io.ktor.http.contentType
 import io.ktor.utils.io.errors.IOException
+import org.jetbrains.compose.resources.getString
+import skribbl.composeapp.generated.resources.Res
+import skribbl.composeapp.generated.resources.check_internet_connection
+import skribbl.composeapp.generated.resources.error_unknown
 
 class StartGameImpl(
-    private val client: HttpClient
+    private val client: HttpClient,
 ) : StartGameService {
-    override suspend fun createRoom(name: String, maxPlayer: Int): Resource<Boolean> {
+    override suspend fun createRoom(name: String, maxPlayer: Int): Resource<Unit> {
         return try {
             val response = client.post(CREATE_ROOM_ROUTE) {
-                contentType(ContentType.Application.Json)
                 setBody(CreateRoomRequest(name, maxPlayer))
-            }.body<BasicApiResponse>()
-            if (response.isSuccessful) {
-                Resource.Success(true)
-            } else {
-                Resource.Error(response.isSuccessful, response.message)
             }
-        } catch (e: IOException) {
-            Resource.Error(null, "Please check your internet")
+            val body = response.body<BasicApiResponse>()
+            if (response.status != HttpStatusCode.OK) {
+                Resource.Error(message = getString(Res.string.error_unknown))
+            } else if (!body.isSuccessful) {
+                Resource.Error(message = body.message)
+            } else {
+                Resource.Success()
+            }
+        } catch (_: IOException) {
+            Resource.Error(message = getString(Res.string.check_internet_connection))
         } catch (e: Exception) {
-            Resource.Error(null, "Unknown error")
+            Resource.Error(message = getString(Res.string.error_unknown))
         }
     }
 
@@ -44,43 +48,43 @@ class StartGameImpl(
      * Handle join room request, response is [BasicApiResponse]
      */
     override suspend fun joinRoom(username: String, roomName: String): Resource<Unit> {
-        try {
-            println("okok")
+        return try {
             val response = client.get(JOIN_ROOM_ROUTE) {
                 parameter("username", username)
                 parameter("roomName", roomName)
             }
-            if (response.status == HttpStatusCode.BadRequest) {
-                return Resource.Error(null, "Username or room name cannot empty")
-            }
-            val basicResponse = response.body<BasicApiResponse>()
+            val body = response.body<BasicApiResponse>()
 
-            return if (basicResponse.isSuccessful) {
-                Resource.Success()
+            if (response.status != HttpStatusCode.OK) {
+                Resource.Error(message = getString(Res.string.error_unknown))
+            } else if (!body.isSuccessful) {
+                Resource.Error(message = body.message)
             } else {
-                Resource.Error(null, basicResponse.message)
+                Resource.Success()
             }
+        } catch (_: IOException) {
+            Resource.Error(message = getString(Res.string.check_internet_connection))
         } catch (e: Exception) {
-            return Resource.Error(null, "Unknown error")
+            Resource.Error(message = getString(Res.string.error_unknown))
         }
     }
 
     override suspend fun getRooms(roomQuery: String): Resource<List<RoomResponse>> {
-        try {
+        return try {
             val response = client.get(GET_ROOM_ROUTE) {
                 parameter("roomQuery", roomQuery)
             }
-            if (response.status == HttpStatusCode.BadRequest) {
-                return Resource.Error(null, "Room query cannot empty")
+            val body = response.body<List<RoomResponse>>()
+            if (response.status != HttpStatusCode.OK) {
+                Resource.Error(null, "Username or room name cannot empty")
+            } else  {
+                Resource.Success(body)
             }
-
-            val roomResponse = response.body<List<RoomResponse>>()
-
-            return Resource.Success(roomResponse)
-        } catch (e: IOException) {
-            return Resource.Error(null, "Please check your internet")
+        } catch (_: IOException) {
+            Resource.Error(message = getString(Res.string.check_internet_connection))
         } catch (e: Exception) {
-            return Resource.Error(null, "Unknown error")
+            Resource.Error(message = getString(Res.string.error_unknown))
         }
     }
 }
+

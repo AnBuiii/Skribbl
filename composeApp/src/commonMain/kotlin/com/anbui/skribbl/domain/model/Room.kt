@@ -4,7 +4,15 @@ data class Room(
     val roomName: String,
     val playerCount: Int,
     val roomSize: Int
-)
+) {
+    enum class Phase {
+        WAITING_FOR_PLAYERS,
+        WAITING_FOR_START,
+        NEW_ROUND,
+        GAME_RUNNING,
+        SHOW_WORD
+    }
+}
 
 val mockRooms = listOf(
     Room(
