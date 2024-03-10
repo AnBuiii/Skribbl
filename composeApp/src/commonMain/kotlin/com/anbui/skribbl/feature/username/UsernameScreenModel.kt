@@ -3,9 +3,10 @@ package com.anbui.skribbl.feature.username
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.anbui.skribbl.domain.repository.SettingRepository
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -27,11 +28,10 @@ class UsernameScreenModel(
         }
     }
 
-    private val _success = MutableStateFlow(false)
-    val success = _success.stateIn(
+    private val _success = MutableSharedFlow<Boolean>()
+    val success = _success.shareIn(
         screenModelScope,
         SharingStarted.WhileSubscribed(5_000),
-        false
     )
 
     fun changeUsername(value: String) {
@@ -39,7 +39,9 @@ class UsernameScreenModel(
     }
 
     fun next() {
-        settingRepository.setName(_username.value)
-        _success.update { true }
+        screenModelScope.launch {
+            settingRepository.setName(_username.value)
+            _success.emit(true)
+        }
     }
 }

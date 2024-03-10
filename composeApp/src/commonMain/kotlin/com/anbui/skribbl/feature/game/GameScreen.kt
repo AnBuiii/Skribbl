@@ -14,13 +14,11 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
-import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -33,6 +31,7 @@ import com.anbui.skribbl.core.presentation.component.SkribblColumn
 import com.anbui.skribbl.core.presentation.component.SkribblTextField
 import com.anbui.skribbl.core.presentation.theme.Color
 import com.anbui.skribbl.feature.game.components.ChatSection
+import com.anbui.skribbl.feature.game.components.PlayerDrawerSheet
 import com.anbui.skribbl.feature.game.components.SkribblCanvas
 import com.anbui.skribbl.platform.getScreenWidth
 import kotlinx.coroutines.launch
@@ -50,19 +49,11 @@ class GameScreen : Screen {
         val drawingPath by screenModel.drawingPath.collectAsState()
         val chat by screenModel.chat.collectAsState()
 
-        val drawerState = androidx.compose.material3.rememberDrawerState(DrawerValue.Closed)
+        val drawerState = rememberDrawerState(DrawerValue.Closed)
 
         ModalNavigationDrawer(
             drawerContent = {
-                ModalDrawerSheet {
-                    Text("Drawer title", modifier = Modifier.padding(16.dp))
-                    Divider()
-                    NavigationDrawerItem(
-                        label = { Text(text = "Drawer Item") },
-                        selected = false,
-                        onClick = { /*TODO*/ }
-                    )
-                }
+                PlayerDrawerSheet()
             },
             gesturesEnabled = true,
             drawerState = drawerState
@@ -140,5 +131,3 @@ class GameScreen : Screen {
         }
     }
 }
-
-// TODO drag

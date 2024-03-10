@@ -4,6 +4,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -11,7 +12,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 
 /**
- * Column with default custom clear gesture
+ * Column with default fill max size and custom clear gesture
  */
 @Composable
 fun SkribblColumn(
@@ -22,7 +23,7 @@ fun SkribblColumn(
 ) {
     val localFocusManager = LocalFocusManager.current
     Column(
-        modifier = modifier.pointerInput(Unit) {
+        modifier = modifier.fillMaxSize().pointerInput(Unit) {
             detectTapGestures(
                 onTap = {
                     localFocusManager.clearFocus()

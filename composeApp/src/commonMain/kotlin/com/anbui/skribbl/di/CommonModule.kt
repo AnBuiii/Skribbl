@@ -7,6 +7,7 @@ import com.anbui.skribbl.core.repository.SettingRepositoryImpl
 import com.anbui.skribbl.core.repository.SnackBarRepositoryImpl
 import com.anbui.skribbl.core.utils.APIConstant
 import com.anbui.skribbl.core.utils.DispatcherProvider
+import com.anbui.skribbl.core.utils.SessionInterceptorPlugin
 import com.anbui.skribbl.domain.repository.SettingRepository
 import com.anbui.skribbl.domain.repository.SnackBarRepository
 import com.anbui.skribbl.domain.repository.SocketService
@@ -29,10 +30,13 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.runBlocking
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
+
 fun commonModule(): Module = module {
+
     // HttpClient
     single<HttpClient> {
         HttpClient(engine) {
@@ -57,7 +61,17 @@ fun commonModule(): Module = module {
             install(WebSockets) {
                 pingInterval = 15_000
             }
+
+            install(SessionInterceptorPlugin(get()))
         }
+    }
+
+    single<String> {
+        runBlocking {
+            val settingRepository = get<SettingRepository>()
+            settingRepository.getClientId()
+        }
+
     }
 
     single<DispatcherProvider> {
@@ -82,7 +96,6 @@ fun commonModule(): Module = module {
     single<UsernameScreenModel> {
         UsernameScreenModel(get())
     }
-
     factory { SelectRoomScreenModel(get(), get(), get()) }
 
     factory { CreateRoomScreenModel(get(), get()) }

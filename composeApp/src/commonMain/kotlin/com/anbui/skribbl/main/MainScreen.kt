@@ -1,6 +1,7 @@
 package com.anbui.skribbl.main
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.runtime.Composable
@@ -17,7 +18,7 @@ fun MainScreen() {
     val screenModel: MainScreenModel = koinInject()
 
     Scaffold(
-        modifier = Modifier.background(Color.Black),
+        modifier = Modifier.fillMaxSize().background(Color.Black),
         snackbarHost = {
             SnackbarHost(screenModel.hostState)
         }
