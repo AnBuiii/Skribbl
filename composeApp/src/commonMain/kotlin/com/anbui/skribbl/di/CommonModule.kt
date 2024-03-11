@@ -6,6 +6,7 @@ import com.anbui.skribbl.core.data.remote.websocket.SocketServiceImpl
 import com.anbui.skribbl.core.repository.SettingRepositoryImpl
 import com.anbui.skribbl.core.repository.SnackBarRepositoryImpl
 import com.anbui.skribbl.core.utils.APIConstant
+import com.anbui.skribbl.core.utils.BaseSerializerModule
 import com.anbui.skribbl.core.utils.DispatcherProvider
 import com.anbui.skribbl.core.utils.SessionInterceptorPlugin
 import com.anbui.skribbl.domain.repository.SettingRepository
@@ -26,8 +27,6 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.websocket.WebSockets
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -52,13 +51,14 @@ fun commonModule(): Module = module {
             }
             install(ContentNegotiation) {
                 json()
+                BaseSerializerModule.baseJson
             }
             install(DefaultRequest) {
                 url {
                     host = APIConstant.HOST_DEVICE_1
                     port = APIConstant.PORT
                 }
-                contentType(ContentType.Application.Json)
+//                contentType(ContentType.Application.Json)
             }
 
             install(WebSockets) {
@@ -106,7 +106,7 @@ fun commonModule(): Module = module {
     factory { MainScreenModel(get()) }
 
     single<GameScreenModel> {
-        GameScreenModel(get(), get(), get())
+        GameScreenModel(get(), get(), get(), get())
     }
 
     // Setting

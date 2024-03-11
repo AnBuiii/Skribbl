@@ -30,4 +30,12 @@ class SettingRepositoryImpl(
     override fun setName(value: String) {
         settingManager.setString(SettingManager.PLAYER_NAME, value)
     }
+
+    override fun setRoom(name: String) {
+        settingManager.setString(SettingManager.ROOM_NAME, name)
+    }
+
+    override suspend fun getRoomName(): String {
+        return settingManager.getString(SettingManager.ROOM_NAME).firstOrNull() ?: ""
+    }
 }

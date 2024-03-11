@@ -79,6 +79,7 @@ class SelectRoomScreenModel(
 
                 is Resource.Success -> {
                     snackBarRepository.showSnackBar("Join")
+                    settingRepository.setRoom(roomName)
                     _screenState.update { ScreenState.DONE }
                 }
             }

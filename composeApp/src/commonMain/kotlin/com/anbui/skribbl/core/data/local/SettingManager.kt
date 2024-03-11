@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 class SettingManager(
     settings: Settings
 ) {
-    var observableSettings: ObservableSettings = settings as ObservableSettings
+    private val observableSettings: ObservableSettings = settings as ObservableSettings
 
     fun setString(key: String, value: String) {
         observableSettings.set(key = key, value = value)
@@ -24,6 +24,7 @@ class SettingManager(
     companion object {
         const val CLIENT_ID = "client_id"
         const val PLAYER_NAME = "playerName"
+        const val ROOM_NAME = "roomName"
     }
 
 }

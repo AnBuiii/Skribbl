@@ -8,8 +8,6 @@ import com.anbui.skribbl.domain.repository.SocketService
 import io.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.websocket.webSocket
-import io.ktor.client.request.parameter
-import io.ktor.util.generateNonce
 import io.ktor.utils.io.errors.IOException
 import io.ktor.websocket.CloseReason
 import io.ktor.websocket.DefaultWebSocketSession
@@ -43,14 +41,11 @@ class SocketServiceImpl(
 
     override suspend fun connect() {
         try {
-            _state.emit(SocketService.STATE.ONGOING)
             client.webSocket(
                 "/ws/draw",
-                request = {
-                    parameter("client", generateNonce())
-                }
             ) {
                 session = this
+                _state.emit(SocketService.STATE.ONGOING)
                 incoming.consumeEach { frame ->
                     if (frame is Frame.Text) {
                         val message = frame.readText()
@@ -67,6 +62,7 @@ class SocketServiceImpl(
             Napier.d { "service unknown error $e" }
             _state.emit(SocketService.STATE.ERROR)
         } finally {
+            Napier.d { "service ready" }
             _state.emit(SocketService.STATE.READY)
         }
     }
@@ -74,15 +70,23 @@ class SocketServiceImpl(
     override suspend fun <T> send(data: T) {
         val frame = when (data) {
             is BaseModel -> {
+                Napier.d { "BaseModel $data" }
+                val hm = data as BaseModel
                 val json = BaseSerializerModule.baseJson
-                json.encodeToString(data)
+                json.encodeToString(hm)
             }
 
             else -> {
+                Napier.d { "NOTBaseModel" }
                 Json.encodeToString(data as Any)
             }
         }
-        session?.send(Frame.Text(frame))
+        if (session != null) {
+            session?.send(Frame.Text(frame))
+
+        } else {
+            Napier.d { "session is null" }
+        }
     }
 
     override suspend fun disconnect(reason: CloseReason?) {

@@ -14,7 +14,9 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
 import io.ktor.utils.io.errors.IOException
 import org.jetbrains.compose.resources.getString
 import skribbl.composeapp.generated.resources.Res
@@ -28,6 +30,7 @@ class StartGameImpl(
         return try {
             val response = client.post(CREATE_ROOM_ROUTE) {
                 setBody(CreateRoomRequest(name, maxPlayer))
+                contentType(ContentType.Application.Json)
             }
             val body = response.body<BasicApiResponse>()
             if (response.status != HttpStatusCode.OK) {
@@ -52,6 +55,7 @@ class StartGameImpl(
             val response = client.get(JOIN_ROOM_ROUTE) {
                 parameter("username", username)
                 parameter("roomName", roomName)
+                contentType(ContentType.Application.Json)
             }
             val body = response.body<BasicApiResponse>()
 
@@ -73,6 +77,7 @@ class StartGameImpl(
         return try {
             val response = client.get(GET_ROOM_ROUTE) {
                 parameter("roomQuery", roomQuery)
+                contentType(ContentType.Application.Json)
             }
             val body = response.body<List<RoomResponse>>()
             if (response.status != HttpStatusCode.OK) {

@@ -4,8 +4,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Path
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.anbui.skribbl.core.data.remote.response.message.GameError
+import com.anbui.skribbl.core.data.remote.response.message.JoinRoomHandshake
 import com.anbui.skribbl.core.utils.DispatcherProvider
 import com.anbui.skribbl.core.utils.toPath
+import com.anbui.skribbl.domain.repository.SettingRepository
 import com.anbui.skribbl.domain.repository.SnackBarRepository
 import com.anbui.skribbl.domain.repository.SocketService
 import io.github.aakira.napier.Napier
@@ -23,6 +26,7 @@ class GameScreenModel(
     private val dispatcher: DispatcherProvider,
     private val socketService: SocketService,
     private val snackBarRepository: SnackBarRepository,
+    private val settingRepository: SettingRepository,
 ) : ScreenModel {
 
     private val _drawingPath = MutableStateFlow<List<Offset>>(emptyList())
@@ -59,6 +63,7 @@ class GameScreenModel(
 
     init {
         observeSocketState()
+        observeSocketData()
     }
 
 
@@ -104,6 +109,11 @@ class GameScreenModel(
         }
     }
 
+    private fun connectServer() {
+        screenModelScope.launch(dispatcher.io) {
+            socketService.connect()
+        }
+    }
 
     private fun observeSocketState() {
         screenModelScope.launch(dispatcher.io) {
@@ -117,17 +127,33 @@ class GameScreenModel(
                         snackBarRepository.showSnackBar(getString(Res.string.error_unknown))
                     }
 
-                    SocketService.STATE.ONGOING -> {}
+                    SocketService.STATE.ONGOING -> {
+                        val joinRoomHandshake = JoinRoomHandshake(
+                            settingRepository.getName(),
+                            settingRepository.getClientId(),
+                            settingRepository.getRoomName()
+                        )
+                        socketService.send(joinRoomHandshake)
+                    }
                 }
             }
 
         }
     }
 
-
-    private fun connectServer() {
+    private fun observeSocketData() {
         screenModelScope.launch(dispatcher.io) {
-            socketService.connect()
+            socketService.data.collect { data ->
+                when (data) {
+                    is GameError -> {
+                        snackBarRepository.showSnackBar(getString(GameError.gameErrorMapper(data.errorType)))
+                    }
+
+                    else -> {
+                        Napier.d { data.toString() }
+                    }
+                }
+            }
         }
     }
 
