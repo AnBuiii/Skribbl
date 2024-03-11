@@ -4,8 +4,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Path
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.anbui.skribbl.core.data.remote.response.message.ChosenWord
 import com.anbui.skribbl.core.data.remote.response.message.GameError
 import com.anbui.skribbl.core.data.remote.response.message.JoinRoomHandshake
+import com.anbui.skribbl.core.data.remote.response.message.NewWords
 import com.anbui.skribbl.core.data.remote.response.message.PhaseChange
 import com.anbui.skribbl.core.utils.DispatcherProvider
 import com.anbui.skribbl.core.utils.toPath
@@ -29,7 +31,6 @@ class GameScreenModel(
     private val snackBarRepository: SnackBarRepository,
     private val settingRepository: SettingRepository,
 ) : ScreenModel {
-
     private val _drawingPath = MutableStateFlow<List<Offset>>(emptyList())
     val drawingPath = _drawingPath
         .map { it.toPath() }
@@ -61,6 +62,20 @@ class GameScreenModel(
             SharingStarted.WhileSubscribed(5_000),
             ""
         )
+
+    private val _newWords = MutableStateFlow<List<String>>(emptyList())
+    val newWords = _newWords.stateIn(
+        screenModelScope,
+        SharingStarted.WhileSubscribed(5_000),
+        emptyList()
+    )
+
+    private val _showChooseWordOverlay = MutableStateFlow(false)
+    val showChooseWordOverlay = _showChooseWordOverlay.stateIn(
+        screenModelScope,
+        SharingStarted.WhileSubscribed(5_000),
+        false
+    )
 
     private val phase = MutableStateFlow(PhaseChange.Phase.WAITING_FOR_PLAYER)
 
@@ -111,12 +126,32 @@ class GameScreenModel(
                 // TODO socket.chat
                 _chat.update { "" }
             }
+
+            is DrawEvent.ChooseWord -> {
+                screenModelScope.launch {
+                    val roomName = settingRepository.getRoomName()
+                    val chosenWord = ChosenWord(event.word, roomName)
+                    socketService.send(chosenWord)
+                }
+            }
         }
     }
 
     private fun connectServer() {
         screenModelScope.launch(dispatcher.io) {
             socketService.connect()
+        }
+    }
+
+    fun phaseHandle(phase: PhaseChange.Phase) {
+        when (phase) {
+            PhaseChange.Phase.GAME_RUNNING -> {
+                _showChooseWordOverlay.update { false }
+            }
+
+            else -> {
+
+            }
         }
     }
 
@@ -154,12 +189,19 @@ class GameScreenModel(
                         snackBarRepository.showSnackBar(getString(GameError.gameErrorMapper(data.errorType)))
                     }
 
+                    is NewWords -> {
+                        _newWords.update { data.newWords }
+                        _showChooseWordOverlay.update { true }
+                    }
+
                     is PhaseChange -> {
                         data.phase?.let { newPhase ->
                             phase.update { newPhase }
+                            phaseHandle(newPhase)
                         }
                         _timer.update { data.timeStamp }
                         Napier.d { "Phase: ${phase.value}, time: ${_timer.value}" }
+
                     }
 
                     else -> {

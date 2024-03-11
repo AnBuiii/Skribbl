@@ -9,4 +9,5 @@ sealed class DrawEvent {
     data object Undo: DrawEvent()
     data class Chat(val message: String): DrawEvent()
     data object SendChat: DrawEvent()
+    data class ChooseWord(val word: String): DrawEvent()
 }

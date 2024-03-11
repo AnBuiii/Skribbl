@@ -31,6 +31,7 @@ import com.anbui.skribbl.core.presentation.component.SkribblColumn
 import com.anbui.skribbl.core.presentation.component.SkribblTextField
 import com.anbui.skribbl.core.presentation.theme.Color
 import com.anbui.skribbl.feature.game.components.ChatSection
+import com.anbui.skribbl.feature.game.components.ChooseWordOverlay
 import com.anbui.skribbl.feature.game.components.PlayerDrawerSheet
 import com.anbui.skribbl.feature.game.components.SkribblCanvas
 import com.anbui.skribbl.feature.game.components.ToolBar
@@ -49,6 +50,8 @@ class GameScreen : Screen {
         val drawnPath by screenModel.drawnPath.collectAsState()
         val drawingPath by screenModel.drawingPath.collectAsState()
         val chat by screenModel.chat.collectAsState()
+        val showChosenWord by screenModel.showChooseWordOverlay.collectAsState()
+        val newWords by screenModel.newWords.collectAsState()
 
         val drawerState = rememberDrawerState(DrawerValue.Closed)
 
@@ -136,6 +139,15 @@ class GameScreen : Screen {
                     modifier = Modifier.align(Alignment.TopCenter),
                     onUndo = {
                         screenModel.onEvent(DrawEvent.Undo)
+                    }
+                )
+
+                // Overlay
+                ChooseWordOverlay(
+                    isVisible = showChosenWord,
+                    words = newWords,
+                    onWordClick = {
+                        screenModel.onEvent(DrawEvent.ChooseWord(it))
                     }
                 )
             }
