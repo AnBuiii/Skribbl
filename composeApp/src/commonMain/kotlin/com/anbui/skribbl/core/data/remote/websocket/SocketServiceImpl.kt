@@ -1,6 +1,7 @@
 package com.anbui.skribbl.core.data.remote.websocket
 
 import com.anbui.skribbl.core.data.remote.response.message.BaseModel
+import com.anbui.skribbl.core.data.remote.response.message.Ping
 import com.anbui.skribbl.core.utils.BaseSerializerModule
 import com.anbui.skribbl.core.utils.DispatcherProvider
 import com.anbui.skribbl.domain.repository.SettingRepository
@@ -51,7 +52,16 @@ class SocketServiceImpl(
                         val message = frame.readText()
                         val payload =
                             BaseSerializerModule.baseJson.decodeFromString<BaseModel>(message)
-                        _data.emit(payload)
+
+                        when (payload) {
+                            is Ping -> {
+                                send(payload)
+                            }
+
+                            else -> {
+                                _data.emit(payload)
+                            }
+                        }
                     }
                 }
             }
