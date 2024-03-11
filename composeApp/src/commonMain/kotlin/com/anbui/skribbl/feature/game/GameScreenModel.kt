@@ -6,15 +6,23 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.anbui.skribbl.core.utils.DispatcherProvider
 import com.anbui.skribbl.core.utils.toPath
+import com.anbui.skribbl.domain.repository.SnackBarRepository
+import com.anbui.skribbl.domain.repository.SocketService
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
+import skribbl.composeapp.generated.resources.Res
+import skribbl.composeapp.generated.resources.error_unknown
 
 class GameScreenModel(
-    private val dispatcher: DispatcherProvider
+    private val dispatcher: DispatcherProvider,
+    private val socketService: SocketService,
+    private val snackBarRepository: SnackBarRepository,
 ) : ScreenModel {
 
     private val _drawingPath = MutableStateFlow<List<Offset>>(emptyList())
@@ -49,9 +57,10 @@ class GameScreenModel(
             ""
         )
 
-    /**
-     * start drawing at [offset]
-     */
+    init {
+        observeSocketState()
+    }
+
 
     fun onEvent(event: DrawEvent) {
         when (event) {
@@ -77,21 +86,49 @@ class GameScreenModel(
                     it + event.offset
                 }
             }
-        }
 
-        fun onChangeChat(value: String) {
-            _chat.update { value }
-        }
+            DrawEvent.Undo -> {
+                _drawnPath.update {
+                    it.dropLast(1)
+                }
+            }
 
-        fun sendChat() {
-            //
+            is DrawEvent.Chat -> {
+                _chat.update { event.message }
+            }
+
+            DrawEvent.SendChat -> {
+                // TODO socket.chat
+                _chat.update { "" }
+            }
         }
     }
 
-    fun onChangeChat(value: String) {
-        _chat.update { value }
+
+    private fun observeSocketState() {
+        screenModelScope.launch(dispatcher.io) {
+            socketService.state.collect { socketState ->
+                when (socketState) {
+                    SocketService.STATE.READY -> {
+                        connectServer()
+                    }
+
+                    SocketService.STATE.ERROR -> {
+                        snackBarRepository.showSnackBar(getString(Res.string.error_unknown))
+                    }
+
+                    SocketService.STATE.ONGOING -> {}
+                }
+            }
+
+        }
     }
 
-    fun sendChat() {
+
+    private fun connectServer() {
+        screenModelScope.launch(dispatcher.io) {
+            socketService.connect()
+        }
     }
+
 }

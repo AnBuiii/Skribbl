@@ -106,7 +106,7 @@ fun commonModule(): Module = module {
     factory { MainScreenModel(get()) }
 
     single<GameScreenModel> {
-        GameScreenModel(get())
+        GameScreenModel(get(), get(), get())
     }
 
     // Setting

@@ -20,7 +20,6 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -34,8 +33,8 @@ import com.anbui.skribbl.core.presentation.theme.Color
 import com.anbui.skribbl.feature.game.components.ChatSection
 import com.anbui.skribbl.feature.game.components.PlayerDrawerSheet
 import com.anbui.skribbl.feature.game.components.SkribblCanvas
+import com.anbui.skribbl.feature.game.components.ToolBar
 import com.anbui.skribbl.platform.getScreenHeight
-import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
@@ -121,14 +120,24 @@ class GameScreen : Screen {
                     SkribblTextField(
                         modifier = Modifier.weight(1f),
                         text = chat,
-                        onValueChange = screenModel::onChangeChat
+                        onValueChange = {
+                            screenModel.onEvent(DrawEvent.Chat(it))
+                        }
                     )
                     IconButton(
-                        onClick = screenModel::sendChat
+                        onClick = { screenModel.onEvent(DrawEvent.SendChat) }
                     ) {
                         Icon(Icons.AutoMirrored.Default.Send, "")
                     }
                 }
+
+                // ToolBar
+                ToolBar(
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    onUndo = {
+                        screenModel.onEvent(DrawEvent.Undo)
+                    }
+                )
             }
         }
     }
