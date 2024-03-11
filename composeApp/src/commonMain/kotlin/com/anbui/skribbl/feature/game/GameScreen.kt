@@ -20,6 +20,7 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -33,7 +34,8 @@ import com.anbui.skribbl.core.presentation.theme.Color
 import com.anbui.skribbl.feature.game.components.ChatSection
 import com.anbui.skribbl.feature.game.components.PlayerDrawerSheet
 import com.anbui.skribbl.feature.game.components.SkribblCanvas
-import com.anbui.skribbl.platform.getScreenWidth
+import com.anbui.skribbl.platform.getScreenHeight
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
@@ -41,7 +43,7 @@ class GameScreen : Screen {
     @Composable
     override fun Content() {
         val screenModel: GameScreenModel = koinInject()
-        val screenWidth = getScreenWidth()
+        val screenHeight = getScreenHeight()
 
         val scope = rememberCoroutineScope()
 
@@ -65,7 +67,7 @@ class GameScreen : Screen {
                         .verticalScroll(rememberScrollState(), false)
                 ) {
                     Column(
-                        modifier = Modifier.height(screenWidth.dp)
+                        modifier = Modifier.height(screenHeight.dp)
                     ) {
                         SkribblCanvas(
                             modifier = Modifier

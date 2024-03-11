@@ -55,7 +55,7 @@ fun commonModule(): Module = module {
             }
             install(DefaultRequest) {
                 url {
-                    host = APIConstant.HOST_DEVICE_2
+                    host = APIConstant.HOST_DEVICE_1
                     port = APIConstant.PORT
                 }
                 contentType(ContentType.Application.Json)

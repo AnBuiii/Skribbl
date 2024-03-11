@@ -53,7 +53,7 @@ class SelectRoomScreenModel(
             when (resource) {
                 is Resource.Error -> {
                     Napier.d { "Error" }
-                    snackBarRepository.showSnackBar(resource.message ?: "error")
+                    snackBarRepository.showSnackBar(resource.message)
                 }
 
                 is Resource.Success -> {
@@ -78,7 +78,7 @@ class SelectRoomScreenModel(
                 }
 
                 is Resource.Success -> {
-                    snackBarRepository.showSnackBar("okeoke")
+                    snackBarRepository.showSnackBar("Join")
                     _screenState.update { ScreenState.DONE }
                 }
             }

@@ -76,7 +76,7 @@ class StartGameImpl(
             }
             val body = response.body<List<RoomResponse>>()
             if (response.status != HttpStatusCode.OK) {
-                Resource.Error(null, "Username or room name cannot empty")
+                Resource.Error(null, getString(Res.string.error_unknown))
             } else  {
                 Resource.Success(body)
             }
