@@ -6,6 +6,7 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.anbui.skribbl.core.data.remote.response.message.GameError
 import com.anbui.skribbl.core.data.remote.response.message.JoinRoomHandshake
+import com.anbui.skribbl.core.data.remote.response.message.PhaseChange
 import com.anbui.skribbl.core.utils.DispatcherProvider
 import com.anbui.skribbl.core.utils.toPath
 import com.anbui.skribbl.domain.repository.SettingRepository
@@ -60,6 +61,10 @@ class GameScreenModel(
             SharingStarted.WhileSubscribed(5_000),
             ""
         )
+
+    private val phase = MutableStateFlow(PhaseChange.Phase.WAITING_FOR_PLAYER)
+
+    private val _timer = MutableStateFlow(0L)
 
     init {
         observeSocketState()
@@ -149,6 +154,13 @@ class GameScreenModel(
                         snackBarRepository.showSnackBar(getString(GameError.gameErrorMapper(data.errorType)))
                     }
 
+                    is PhaseChange -> {
+                        data.phase?.let { newPhase ->
+                            phase.update { newPhase }
+                        }
+                        _timer.update { data.timeStamp }
+                        Napier.d { "Phase: ${phase.value}, time: ${_timer.value}" }
+                    }
 
                     else -> {
                         Napier.d { data.toString() }

@@ -1,6 +1,5 @@
 package com.anbui.skribbl.core.data.remote.response.message
 
-import com.anbui.skribbl.domain.model.Room
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -13,7 +12,15 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName(BaseModel.PHASE_CHANGE)
 data class PhaseChange(
-    var phase: String?,
+    var phase: Phase?,
     var timeStamp: Long,
     val drawingPlayer: String? = null
-) : BaseModel()
+) : BaseModel() {
+    enum class Phase {
+        WAITING_FOR_PLAYER,
+        WAITING_FOR_START,
+        NEW_ROUND,
+        GAME_RUNNING,
+        SHOW_WORD
+    }
+}
