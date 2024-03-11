@@ -55,7 +55,8 @@ class SocketServiceImpl(
 
                         when (payload) {
                             is Ping -> {
-                                send(payload)
+                                val pong: BaseModel = Ping()
+                                send(pong)
                             }
 
                             else -> {
@@ -87,7 +88,7 @@ class SocketServiceImpl(
             }
 
             else -> {
-                Napier.d { "NOTBaseModel" }
+                Napier.d { "NOTBaseModel $data" }
                 Json.encodeToString(data as Any)
             }
         }

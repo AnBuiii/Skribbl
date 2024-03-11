@@ -149,6 +149,7 @@ class GameScreenModel(
                         snackBarRepository.showSnackBar(getString(GameError.gameErrorMapper(data.errorType)))
                     }
 
+
                     else -> {
                         Napier.d { data.toString() }
                     }

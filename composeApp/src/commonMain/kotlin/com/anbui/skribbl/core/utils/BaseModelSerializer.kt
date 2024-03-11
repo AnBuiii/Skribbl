@@ -14,6 +14,7 @@ import com.anbui.skribbl.core.data.remote.response.message.NewWords
 import com.anbui.skribbl.core.data.remote.response.message.NotBaseModel
 import com.anbui.skribbl.core.data.remote.response.message.PhaseChange
 import com.anbui.skribbl.core.data.remote.response.message.Ping
+import com.anbui.skribbl.core.data.remote.response.message.PlayerList
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
@@ -34,6 +35,7 @@ object BaseSerializerModule {
             subclass(Ping::class)
             subclass(Disconnect::class)
             subclass(DrawAction::class)
+            subclass(PlayerList::class)
             defaultDeserializer { NotBaseModel.serializer() }
         }
     }

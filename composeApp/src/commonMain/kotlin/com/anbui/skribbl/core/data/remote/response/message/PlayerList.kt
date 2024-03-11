@@ -10,4 +10,4 @@ import kotlinx.serialization.Serializable
 @SerialName(BaseModel.PLAYER_LIST)
 data class PlayerList(
     val players: List<PlayerData>
-)
+): BaseModel()

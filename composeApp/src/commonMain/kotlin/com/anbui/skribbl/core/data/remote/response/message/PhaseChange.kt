@@ -13,7 +13,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 @SerialName(BaseModel.PHASE_CHANGE)
 data class PhaseChange(
-    var phase: Room.Phase?,
+    var phase: String?,
     var timeStamp: Long,
     val drawingPlayer: String? = null
 ) : BaseModel()
