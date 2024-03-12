@@ -36,8 +36,8 @@ class UsernameScreen : Screen {
         val username by screenModel.username.collectAsState()
 
         LaunchedEffect(Unit) {
-            screenModel.success.collect { success ->
-                if (success) {
+            screenModel.screenEvent.collect { event ->
+                if (event == UsernameScreenEvent.GoNext) {
                     navigator.push(SelectRoomScreen())
                 }
             }

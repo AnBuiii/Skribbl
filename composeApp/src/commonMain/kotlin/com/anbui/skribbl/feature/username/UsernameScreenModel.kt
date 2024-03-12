@@ -22,17 +22,17 @@ class UsernameScreenModel(
         ""
     )
 
+    private val _screenEvent = MutableSharedFlow<UsernameScreenEvent>()
+    val screenEvent = _screenEvent.shareIn(
+        screenModelScope,
+        SharingStarted.WhileSubscribed(5_000),
+    )
+
     init {
         screenModelScope.launch {
             _username.update { settingRepository.getName() }
         }
     }
-
-    private val _success = MutableSharedFlow<Boolean>()
-    val success = _success.shareIn(
-        screenModelScope,
-        SharingStarted.WhileSubscribed(5_000),
-    )
 
     fun changeUsername(value: String) {
         _username.update { value }
@@ -41,7 +41,11 @@ class UsernameScreenModel(
     fun next() {
         screenModelScope.launch {
             settingRepository.setName(_username.value)
-            _success.emit(true)
+            _screenEvent.emit(UsernameScreenEvent.GoNext)
         }
     }
+}
+
+sealed class UsernameScreenEvent {
+    data object GoNext : UsernameScreenEvent()
 }

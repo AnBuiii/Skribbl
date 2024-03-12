@@ -29,7 +29,6 @@ import com.anbui.skribbl.core.presentation.theme.SpaceMedium
 import com.anbui.skribbl.feature.createRoom.CreateRoomScreen
 import com.anbui.skribbl.feature.game.GameScreen
 import com.anbui.skribbl.feature.selectRoom.components.RoomItem
-import org.koin.compose.koinInject
 
 class SelectRoomScreen : Screen {
 
@@ -42,8 +41,8 @@ class SelectRoomScreen : Screen {
         val rooms by screenModel.room.collectAsState()
 
         LaunchedEffect(Unit) {
-            screenModel.screenState.collect { screenState ->
-                if (screenState is ScreenState.DONE) {
+            screenModel.screenEvent.collect { event ->
+                if (event is ScreenEvent.GoNext) {
                     navigator.push(GameScreen())
                 }
             }
