@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.anbui.skribbl.core.presentation.component.SkribblTextButton
@@ -30,7 +31,7 @@ class CreateRoomScreen : Screen {
     @Composable
     override fun Content() {
         val localFocusManager = LocalFocusManager.current
-        val screenModel: CreateRoomScreenModel = koinInject()
+        val screenModel: CreateRoomScreenModel = getScreenModel()
         val navigator = LocalNavigator.currentOrThrow
 
         val roomName by screenModel.roomName.collectAsState()

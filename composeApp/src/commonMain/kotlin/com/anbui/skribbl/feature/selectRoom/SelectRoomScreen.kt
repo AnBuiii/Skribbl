@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.anbui.skribbl.core.presentation.component.SkribblColumn
@@ -34,7 +35,7 @@ class SelectRoomScreen : Screen {
 
     @Composable
     override fun Content() {
-        val screenModel: SelectRoomScreenModel = koinInject()
+        val screenModel: SelectRoomScreenModel = getScreenModel()
         val navigator = LocalNavigator.currentOrThrow
 
         val roomQuery by screenModel.roomQuery.collectAsState()

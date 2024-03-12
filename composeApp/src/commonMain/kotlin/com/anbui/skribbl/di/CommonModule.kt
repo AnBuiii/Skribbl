@@ -62,7 +62,7 @@ fun commonModule(): Module = module {
             }
 
             install(WebSockets) {
-                pingInterval = 15_000
+//                pingInterval = 15_000
             }
 
             install(SessionInterceptorPlugin(get()))
@@ -105,7 +105,7 @@ fun commonModule(): Module = module {
 
     factory { MainScreenModel(get()) }
 
-    single<GameScreenModel> {
+    factory<GameScreenModel> {
         GameScreenModel(get(), get(), get(), get())
     }
 

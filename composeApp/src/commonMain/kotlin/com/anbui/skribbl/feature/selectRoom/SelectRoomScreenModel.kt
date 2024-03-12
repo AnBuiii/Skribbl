@@ -85,6 +85,11 @@ class SelectRoomScreenModel(
             }
         }
     }
+
+    override fun onDispose() {
+        super.onDispose()
+        Napier.d { "select room dispose" }
+    }
 }
 
 sealed class ScreenState {

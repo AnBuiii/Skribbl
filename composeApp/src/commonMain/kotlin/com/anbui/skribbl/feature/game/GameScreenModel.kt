@@ -212,4 +212,10 @@ class GameScreenModel(
         }
     }
 
+    override fun onDispose() {
+        super.onDispose()
+        Napier.d { "dispose" }
+
+    }
+
 }

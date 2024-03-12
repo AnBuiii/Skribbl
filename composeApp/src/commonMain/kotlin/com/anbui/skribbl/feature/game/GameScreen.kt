@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.koin.getScreenModel
 import com.anbui.skribbl.core.presentation.component.SkribblColumn
 import com.anbui.skribbl.core.presentation.component.SkribblTextField
 import com.anbui.skribbl.core.presentation.theme.Color
@@ -37,12 +38,11 @@ import com.anbui.skribbl.feature.game.components.SkribblCanvas
 import com.anbui.skribbl.feature.game.components.ToolBar
 import com.anbui.skribbl.platform.getScreenHeight
 import kotlinx.coroutines.launch
-import org.koin.compose.koinInject
 
 class GameScreen : Screen {
     @Composable
     override fun Content() {
-        val screenModel: GameScreenModel = koinInject()
+        val screenModel: GameScreenModel = getScreenModel()
         val screenHeight = getScreenHeight()
 
         val scope = rememberCoroutineScope()
