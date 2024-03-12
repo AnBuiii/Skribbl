@@ -1,10 +1,10 @@
 package com.anbui.skribbl.feature.game
 
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Path
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.anbui.skribbl.core.data.remote.response.message.ChosenWord
+import com.anbui.skribbl.core.data.remote.response.message.DrawData
 import com.anbui.skribbl.core.data.remote.response.message.GameError
 import com.anbui.skribbl.core.data.remote.response.message.JoinRoomHandshake
 import com.anbui.skribbl.core.data.remote.response.message.NewWords
@@ -25,35 +25,49 @@ import org.jetbrains.compose.resources.getString
 import skribbl.composeapp.generated.resources.Res
 import skribbl.composeapp.generated.resources.error_unknown
 
+data class SkribblPath(
+    val path: Path,
+    val thickness: Float = 1f,
+    val color: Int = 0
+
+)
+
 class GameScreenModel(
     private val dispatcher: DispatcherProvider,
     private val socketService: SocketService,
     private val snackBarRepository: SnackBarRepository,
     private val settingRepository: SettingRepository,
 ) : ScreenModel {
-    private val _drawingPath = MutableStateFlow<List<Offset>>(emptyList())
+    private val _drawingPath = MutableStateFlow<List<DrawData>>(emptyList())
     val drawingPath = _drawingPath
         .map { it.toPath() }
         .stateIn(
             screenModelScope,
             SharingStarted.WhileSubscribed(5_000L),
-            Path()
+            SkribblPath(Path(), 0f, 0)
         )
 
-    private val _drawnPath = MutableStateFlow<List<Path>>(emptyList())
+    private val _drawnPath = MutableStateFlow<List<SkribblPath>>(emptyList())
     val drawnPath = _drawnPath
-        .map { paths ->
-            Path().apply {
-                paths.forEach { p ->
-                    addPath(p)
-                }
-            }
-        }
         .stateIn(
             screenModelScope,
             SharingStarted.WhileSubscribed(5_000L),
-            Path()
+            emptyList()
         )
+
+    private val _color = MutableStateFlow(0)
+    val color = _color.stateIn(
+        screenModelScope,
+        SharingStarted.WhileSubscribed(5_000L),
+        0
+    )
+
+    private val _thickness = MutableStateFlow(1f)
+    val thickness = _thickness.stateIn(
+        screenModelScope,
+        SharingStarted.WhileSubscribed(5_000),
+        1f
+    )
 
     private val _chat = MutableStateFlow("")
     val chat = _chat
@@ -90,25 +104,57 @@ class GameScreenModel(
     fun onEvent(event: DrawEvent) {
         when (event) {
             is DrawEvent.BeginDraw -> {
-                Napier.d { event.offset.toString() }
-                _drawingPath.update {
-                    it + event.offset
+                screenModelScope.launch(dispatcher.io) {
+                    val drawData = DrawData(
+                        "",
+                        color = _color.value,
+                        thickness = _thickness.value,
+                        x = event.offset.x,
+                        y = event.offset.y,
+                        motionEvent = DrawData.MOTION_DRAWING
+                    )
+                    socketService.send(drawData)
+
+                    _drawingPath.update {
+                        it + drawData
+                    }
                 }
             }
 
             is DrawEvent.EndDraw -> {
-                Napier.d { "stop" }
+                screenModelScope.launch(dispatcher.io) {
+                    val newPath = _drawingPath.value.toPath()
+                    val last = _drawingPath.value.last()
+                    _drawnPath.update { it + newPath }
 
-                val newPath = _drawingPath.value.toPath()
+                    val drawData = DrawData(
+                        "",
+                        color = _color.value,
+                        thickness = _thickness.value,
+                        x = last.x,
+                        y = last.y,
+                        motionEvent = DrawData.MOTION_UP
+                    )
+                    socketService.send(drawData)
+                    _drawingPath.update { emptyList() }
+                }
 
-                _drawnPath.update { it + newPath }
-                _drawingPath.update { emptyList() }
             }
 
             is DrawEvent.OnDraw -> {
-                Napier.d { event.offset.toString() }
-                _drawingPath.update {
-                    it + event.offset
+                screenModelScope.launch {
+                    val drawData = DrawData(
+                        "",
+                        color = _color.value,
+                        thickness = _thickness.value,
+                        x = event.offset.x,
+                        y = event.offset.y,
+                        motionEvent = DrawData.MOTION_DRAWING
+                    )
+                    socketService.send(drawData)
+                    _drawingPath.update {
+                        it + drawData
+                    }
                 }
             }
 
@@ -192,6 +238,10 @@ class GameScreenModel(
                     is NewWords -> {
                         _newWords.update { data.newWords }
                         _showChooseWordOverlay.update { true }
+                    }
+
+                    is DrawData -> {
+
                     }
 
                     is PhaseChange -> {

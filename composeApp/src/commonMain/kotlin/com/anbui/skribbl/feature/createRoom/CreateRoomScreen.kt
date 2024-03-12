@@ -23,9 +23,6 @@ import com.anbui.skribbl.core.presentation.component.SkribblTextButton
 import com.anbui.skribbl.core.presentation.component.SkribblTextField
 import com.anbui.skribbl.core.presentation.theme.SpaceLarge
 import com.anbui.skribbl.core.presentation.theme.SpaceMedium
-import com.anbui.skribbl.feature.game.GameScreen
-import com.anbui.skribbl.feature.selectRoom.ScreenState
-import org.koin.compose.koinInject
 
 class CreateRoomScreen : Screen {
     @Composable
@@ -38,8 +35,8 @@ class CreateRoomScreen : Screen {
         val roomSize by screenModel.roomSize.collectAsState()
 
         LaunchedEffect(Unit) {
-            screenModel.screenState.collect { screenState ->
-                if (screenState is ScreenState.DONE) {
+            screenModel.screenEvent.collect { event ->
+                if (event is CreateRoomScreenEvent.GoNext) {
                     navigator.pop()
                 }
             }

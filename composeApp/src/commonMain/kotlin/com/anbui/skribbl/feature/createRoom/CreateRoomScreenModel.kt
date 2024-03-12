@@ -6,8 +6,10 @@ import com.anbui.skribbl.core.utils.Resource
 import com.anbui.skribbl.domain.repository.SnackBarRepository
 import com.anbui.skribbl.domain.repository.StartGameService
 import com.anbui.skribbl.feature.selectRoom.ScreenState
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -17,10 +19,11 @@ class CreateRoomScreenModel(
     private val snackBarRepository: SnackBarRepository
 ) : ScreenModel {
     private val _screenState = MutableStateFlow<ScreenState>(ScreenState.READY)
-    val screenState = _screenState.stateIn(
+
+    private val _screenEvent = MutableSharedFlow<CreateRoomScreenEvent>()
+    val screenEvent = _screenEvent.shareIn(
         screenModelScope,
-        SharingStarted.WhileSubscribed(5_000),
-        ScreenState.READY
+        SharingStarted.WhileSubscribed(5_000)
     )
 
     private val _roomName = MutableStateFlow("")
@@ -56,10 +59,14 @@ class CreateRoomScreenModel(
                 }
 
                 is Resource.Success -> {
-                    snackBarRepository.showSnackBar("okeoke")
-                    _screenState.update { ScreenState.DONE }
+                    snackBarRepository.showSnackBar("Create success")
+                    _screenEvent.emit(CreateRoomScreenEvent.GoNext)
                 }
             }
         }
     }
+}
+
+sealed class CreateRoomScreenEvent {
+    data object GoNext : CreateRoomScreenEvent()
 }

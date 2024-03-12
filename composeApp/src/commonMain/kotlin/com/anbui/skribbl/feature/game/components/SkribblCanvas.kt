@@ -6,17 +6,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
-import io.github.aakira.napier.Napier
+import com.anbui.skribbl.feature.game.SkribblPath
 
 @Composable
 fun SkribblCanvas(
     modifier: Modifier = Modifier,
-    drawnPath: Path,
-    drawingPath: Path,
+    drawnPath: List<SkribblPath>,
+    drawingPath: SkribblPath,
     onBeginDraw: (Offset) -> Unit,
     onEndDraw: () -> Unit,
     onDraw: (Offset) -> Unit
@@ -28,25 +27,27 @@ fun SkribblCanvas(
                     onDragStart = onBeginDraw,
                     onDragEnd = onEndDraw
                 ) { change, _ ->
-                    Napier.d { "asdasd" }
                     onDraw(change.position)
                 }
             }
     ) {
-        drawPath(
-            drawnPath,
-            Color.Black,
-            style = Stroke(
-                width = 5f,
-                pathEffect = PathEffect.cornerPathEffect(50f)
+
+        drawnPath.forEach {
+            drawPath(
+                it.path,
+                Color.Black,
+                style = Stroke(
+                    width = it.thickness,
+                    pathEffect = PathEffect.cornerPathEffect(50f)
+                )
             )
-        )
+        }
 
         drawPath(
-            drawingPath,
+            drawingPath.path,
             Color.Black,
             style = Stroke(
-                width = 3f,
+                width = drawingPath.thickness,
                 pathEffect = PathEffect.cornerPathEffect(50f)
             )
         )
