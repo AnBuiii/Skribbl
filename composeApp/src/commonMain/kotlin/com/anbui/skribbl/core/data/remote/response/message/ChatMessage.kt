@@ -1,5 +1,6 @@
 package com.anbui.skribbl.core.data.remote.response.message
 
+import kotlinx.datetime.Clock
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -16,5 +17,5 @@ data class ChatMessage(
     val from: String,
     val roomName: String,
     val message: String,
-    val timeStamp: Long
+    val timeStamp: Long = Clock.System.now().toEpochMilliseconds()
 ) : BaseModel()

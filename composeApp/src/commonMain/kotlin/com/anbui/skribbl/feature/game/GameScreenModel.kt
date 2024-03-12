@@ -3,6 +3,7 @@ package com.anbui.skribbl.feature.game
 import androidx.compose.ui.graphics.Path
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.anbui.skribbl.core.data.remote.response.message.ChatMessage
 import com.anbui.skribbl.core.data.remote.response.message.ChosenWord
 import com.anbui.skribbl.core.data.remote.response.message.DrawData
 import com.anbui.skribbl.core.data.remote.response.message.GameError
@@ -189,8 +190,13 @@ class GameScreenModel(
             }
 
             DrawEvent.SendChat -> {
-                // TODO socket.chat
-                _chat.update { "" }
+                screenModelScope.launch(dispatcher.io) {
+                    val chatMessage =
+                        ChatMessage(from = playerName, roomName = roomName, message = _chat.value)
+
+                    socketService.send(chatMessage)
+                    _chat.update { "" }
+                }
             }
 
             is DrawEvent.ChooseWord -> {
@@ -213,6 +219,11 @@ class GameScreenModel(
         when (phase) {
             PhaseChange.Phase.GAME_RUNNING -> {
                 _showChooseWordOverlay.update { false }
+            }
+
+            PhaseChange.Phase.NEW_ROUND -> {
+                _drawingPath.update { emptyList() }
+                _drawnPath.update { emptyList() }
             }
 
             else -> {

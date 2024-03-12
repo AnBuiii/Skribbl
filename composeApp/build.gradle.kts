@@ -76,6 +76,8 @@ kotlin {
 
             api(libs.multiplatformSettings.noArg)
             api(libs.multiplatformSettings.coroutines)
+
+            implementation(libs.kotlinx.datetime)
         }
 
         iosMain.dependencies {
