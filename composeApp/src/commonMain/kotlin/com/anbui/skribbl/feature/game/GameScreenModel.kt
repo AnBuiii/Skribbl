@@ -82,6 +82,13 @@ class GameScreenModel(
             ""
         )
 
+    private val _chatMessage = MutableStateFlow<List<ChatMessage>>(emptyList())
+    val chatMessage = _chatMessage.stateIn(
+        screenModelScope,
+        SharingStarted.WhileSubscribed(5_000),
+        emptyList()
+    )
+
     private val _newWords = MutableStateFlow<List<String>>(emptyList())
     val newWords = _newWords.stateIn(
         screenModelScope,
@@ -193,7 +200,6 @@ class GameScreenModel(
                 screenModelScope.launch(dispatcher.io) {
                     val chatMessage =
                         ChatMessage(from = playerName, roomName = roomName, message = _chat.value)
-
                     socketService.send(chatMessage)
                     _chat.update { "" }
                 }
@@ -295,6 +301,10 @@ class GameScreenModel(
                         _timer.update { data.timeStamp }
                         Napier.d { "Phase: ${phase.value}, time: ${_timer.value}" }
 
+                    }
+
+                    is ChatMessage -> {
+                        _chatMessage.update { it + data }
                     }
 
                     else -> {

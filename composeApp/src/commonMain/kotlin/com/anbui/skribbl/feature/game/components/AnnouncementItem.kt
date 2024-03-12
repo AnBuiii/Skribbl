@@ -10,12 +10,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.anbui.skribbl.core.data.remote.response.message.ChatMessage
 import com.anbui.skribbl.core.presentation.theme.Color
 import com.anbui.skribbl.core.presentation.theme.SpaceSmall
 
 @Composable
 fun AnnouncementItem(
-    message: String
+    chatMessage: ChatMessage
 ) {
     Box(
         modifier = Modifier.border(
@@ -25,6 +26,6 @@ fun AnnouncementItem(
         ).background(Color.Yellow).padding(SpaceSmall),
         contentAlignment = Alignment.Center
     ) {
-        Text(message)
+        Text(chatMessage.message)
     }
 }

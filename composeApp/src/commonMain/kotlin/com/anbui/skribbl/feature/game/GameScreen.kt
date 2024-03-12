@@ -50,6 +50,7 @@ class GameScreen : Screen {
         val drawnPath by screenModel.drawnPath.collectAsState()
         val drawingPath by screenModel.drawingPath.collectAsState()
         val chat by screenModel.chat.collectAsState()
+        val chatMessages by screenModel.chatMessage.collectAsState()
         val showChosenWord by screenModel.showChooseWordOverlay.collectAsState()
         val newWords by screenModel.newWords.collectAsState()
 
@@ -96,6 +97,7 @@ class GameScreen : Screen {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .weight(2f),
+                            chatMessages = chatMessages,
                             onOpenPlayerDrawer = {
                                 scope.launch {
                                     if (!drawerState.isAnimationRunning) {
