@@ -6,6 +6,7 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.anbui.skribbl.core.data.remote.response.message.ChosenWord
 import com.anbui.skribbl.core.data.remote.response.message.DrawData
 import com.anbui.skribbl.core.data.remote.response.message.GameError
+import com.anbui.skribbl.core.data.remote.response.message.GameState
 import com.anbui.skribbl.core.data.remote.response.message.JoinRoomHandshake
 import com.anbui.skribbl.core.data.remote.response.message.NewWords
 import com.anbui.skribbl.core.data.remote.response.message.PhaseChange
@@ -38,6 +39,9 @@ class GameScreenModel(
     private val snackBarRepository: SnackBarRepository,
     private val settingRepository: SettingRepository,
 ) : ScreenModel {
+    private var roomName = ""
+    private var playerName = ""
+
     private val _drawingPath = MutableStateFlow<List<DrawData>>(emptyList())
     val drawingPath = _drawingPath
         .map { it.toPath() }
@@ -93,17 +97,31 @@ class GameScreenModel(
 
     private val phase = MutableStateFlow(PhaseChange.Phase.WAITING_FOR_PLAYER)
 
+    private var drawPlayer = ""
+
     private val _timer = MutableStateFlow(0L)
 
     init {
+        getUserInformation()
         observeSocketState()
         observeSocketData()
     }
 
+    private fun getUserInformation() {
+        screenModelScope.launch(dispatcher.io) {
+            roomName = settingRepository.getRoomName()
+            playerName = settingRepository.getName()
+        }
+    }
+
+    private fun canDraw(): Boolean {
+        return phase.value == PhaseChange.Phase.GAME_RUNNING && drawPlayer == playerName
+    }
 
     fun onEvent(event: DrawEvent) {
         when (event) {
             is DrawEvent.BeginDraw -> {
+                if (!canDraw()) return
                 screenModelScope.launch(dispatcher.io) {
                     val drawData = DrawData(
                         "",
@@ -122,6 +140,7 @@ class GameScreenModel(
             }
 
             is DrawEvent.EndDraw -> {
+                if (!canDraw()) return
                 screenModelScope.launch(dispatcher.io) {
                     val newPath = _drawingPath.value.toPath()
                     val last = _drawingPath.value.last()
@@ -142,9 +161,10 @@ class GameScreenModel(
             }
 
             is DrawEvent.OnDraw -> {
+                if (!canDraw()) return
                 screenModelScope.launch {
                     val drawData = DrawData(
-                        "",
+                        roomName,
                         color = _color.value,
                         thickness = _thickness.value,
                         x = event.offset.x,
@@ -240,8 +260,20 @@ class GameScreenModel(
                         _showChooseWordOverlay.update { true }
                     }
 
-                    is DrawData -> {
+                    is GameState -> {
+                        drawPlayer = data.drawingPlayer
+                    }
 
+                    is DrawData -> {
+                        if (data.motionEvent == DrawData.MOTION_DRAWING) {
+                            _drawingPath.update {
+                                it + data
+                            }
+                        } else {
+                            val newPath = _drawingPath.value.toPath()
+                            _drawnPath.update { it + newPath }
+                            _drawingPath.update { emptyList() }
+                        }
                     }
 
                     is PhaseChange -> {
