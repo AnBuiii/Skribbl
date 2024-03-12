@@ -5,6 +5,7 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.anbui.skribbl.core.data.remote.response.message.ChatMessage
 import com.anbui.skribbl.core.data.remote.response.message.ChosenWord
+import com.anbui.skribbl.core.data.remote.response.message.Disconnect
 import com.anbui.skribbl.core.data.remote.response.message.DrawData
 import com.anbui.skribbl.core.data.remote.response.message.GameError
 import com.anbui.skribbl.core.data.remote.response.message.GameState
@@ -317,8 +318,12 @@ class GameScreenModel(
 
     override fun onDispose() {
         super.onDispose()
-        Napier.d { "dispose" }
 
+        //?
+        screenModelScope.launch {
+            Napier.d { "dispose" }
+            socketService.send(Disconnect())
+        }
     }
 
 }
