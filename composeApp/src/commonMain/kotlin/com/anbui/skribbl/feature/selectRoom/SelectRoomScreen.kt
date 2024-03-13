@@ -49,11 +49,6 @@ class SelectRoomScreen : Screen {
         val roomQuery by screenModel.roomQuery.collectAsState()
         val rooms by screenModel.room.collectAsState()
 
-        val roomsEmpty by remember { derivedStateOf { rooms.isEmpty() } }
-
-
-
-
         LaunchedEffect(Unit) {
             screenModel.screenEvent.collect { event ->
                 if (event == ScreenEvent.GoNext) {
