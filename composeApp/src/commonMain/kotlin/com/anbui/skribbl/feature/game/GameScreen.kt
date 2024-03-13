@@ -59,6 +59,7 @@ class GameScreen : Screen {
         val newWords by screenModel.newWords.collectAsState()
         val players by screenModel.players.collectAsState()
         val playerName by screenModel.playerName.collectAsState()
+        val time by screenModel.time.collectAsState()
 
         val drawerState = rememberDrawerState(DrawerValue.Closed)
 
@@ -105,7 +106,6 @@ class GameScreen : Screen {
 
                         )
                         HorizontalDivider(thickness = 2.dp)
-                        //
 
                         ChatSection(
                             modifier = Modifier
@@ -124,7 +124,8 @@ class GameScreen : Screen {
                                 }
                             },
                             onVoice = {},
-                            playerName = playerName
+                            playerName = playerName,
+                            time = time
                         )
                     }
                 }

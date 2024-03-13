@@ -39,7 +39,6 @@ data class SkribblPath(
     val path: Path,
     val thickness: Float = 1f,
     val color: Int = 0
-
 )
 
 class GameScreenModel(
@@ -96,7 +95,8 @@ class GameScreenModel(
 
     private var drawPlayer = ""
 
-    private val _timer = MutableStateFlow(0L)
+    private val _timer = MutableStateFlow("0")
+    val time = _timer.asStateFlow()
 
     init {
         getUserInformation()
@@ -309,7 +309,7 @@ class GameScreenModel(
                             phase.update { newPhase }
                             phaseHandle(newPhase)
                         }
-                        _timer.update { data.timeStamp }
+                        _timer.update { (data.timeStamp / 1000).toString() }
                         Napier.d { "Phase: ${phase.value}, time: ${_timer.value}" }
 
                     }
