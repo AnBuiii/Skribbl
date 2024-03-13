@@ -5,8 +5,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,8 +32,8 @@ fun RoomItem(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(room.roomName)
+        Text(room.roomName, style = MaterialTheme.typography.bodyLarge)
 
-        Text("${room.playerCount}/${room.roomSize}")
+        Text("${room.playerCount}/${room.roomSize}", style = MaterialTheme.typography.bodyMedium)
     }
 }

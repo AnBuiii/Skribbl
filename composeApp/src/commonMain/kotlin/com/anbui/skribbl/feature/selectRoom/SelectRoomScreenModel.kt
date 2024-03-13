@@ -5,7 +5,6 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.anbui.skribbl.core.utils.Resource
 import com.anbui.skribbl.domain.model.Room
 import com.anbui.skribbl.domain.model.RoomResponse
-import com.anbui.skribbl.domain.model.mockRooms
 import com.anbui.skribbl.domain.repository.SettingRepository
 import com.anbui.skribbl.domain.repository.SnackBarRepository
 import com.anbui.skribbl.domain.repository.StartGameService
@@ -33,7 +32,7 @@ class SelectRoomScreenModel(
     private val _roomQuery = MutableStateFlow("")
     val roomQuery = _roomQuery.asStateFlow()
 
-    private val _rooms = MutableStateFlow(mockRooms)
+    private val _rooms = MutableStateFlow<List<Room>>(emptyList())
     val room = _rooms.asStateFlow()
 
     fun changeRoomQuery(value: String) {
