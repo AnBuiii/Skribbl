@@ -42,7 +42,7 @@ class SelectRoomScreen : Screen {
 
         LaunchedEffect(Unit) {
             screenModel.screenEvent.collect { event ->
-                if (event is ScreenEvent.GoNext) {
+                if (event == ScreenEvent.GoNext) {
                     navigator.push(GameScreen())
                 }
             }

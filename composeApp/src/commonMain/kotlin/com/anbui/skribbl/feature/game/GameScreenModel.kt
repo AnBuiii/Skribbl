@@ -1,7 +1,7 @@
 package com.anbui.skribbl.feature.game
 
 import androidx.compose.ui.graphics.Path
-import cafe.adriel.voyager.core.model.ScreenModel
+import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.anbui.skribbl.core.data.remote.response.message.ChatMessage
 import com.anbui.skribbl.core.data.remote.response.message.ChosenWord
@@ -12,6 +12,8 @@ import com.anbui.skribbl.core.data.remote.response.message.GameState
 import com.anbui.skribbl.core.data.remote.response.message.JoinRoomHandshake
 import com.anbui.skribbl.core.data.remote.response.message.NewWords
 import com.anbui.skribbl.core.data.remote.response.message.PhaseChange
+import com.anbui.skribbl.core.data.remote.response.message.PlayerData
+import com.anbui.skribbl.core.data.remote.response.message.PlayerList
 import com.anbui.skribbl.core.utils.DispatcherProvider
 import com.anbui.skribbl.core.utils.toPath
 import com.anbui.skribbl.domain.repository.SettingRepository
@@ -20,6 +22,7 @@ import com.anbui.skribbl.domain.repository.SocketService
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -40,7 +43,7 @@ class GameScreenModel(
     private val socketService: SocketService,
     private val snackBarRepository: SnackBarRepository,
     private val settingRepository: SettingRepository,
-) : ScreenModel {
+) : StateScreenModel<Int>(3) {
     private var roomName = ""
     private var playerName = ""
 
@@ -54,55 +57,28 @@ class GameScreenModel(
         )
 
     private val _drawnPath = MutableStateFlow<List<SkribblPath>>(emptyList())
-    val drawnPath = _drawnPath
-        .stateIn(
-            screenModelScope,
-            SharingStarted.WhileSubscribed(5_000L),
-            emptyList()
-        )
+    val drawnPath = _drawnPath.asStateFlow()
 
     private val _color = MutableStateFlow(0)
-    val color = _color.stateIn(
-        screenModelScope,
-        SharingStarted.WhileSubscribed(5_000L),
-        0
-    )
+    val color = _color.asStateFlow()
 
     private val _thickness = MutableStateFlow(1f)
-    val thickness = _thickness.stateIn(
-        screenModelScope,
-        SharingStarted.WhileSubscribed(5_000),
-        1f
-    )
+    val thickness = _thickness.asStateFlow()
 
     private val _chat = MutableStateFlow("")
-    val chat = _chat
-        .stateIn(
-            screenModelScope,
-            SharingStarted.WhileSubscribed(5_000),
-            ""
-        )
+    val chat = _chat.asStateFlow()
 
     private val _chatMessage = MutableStateFlow<List<ChatMessage>>(emptyList())
-    val chatMessage = _chatMessage.stateIn(
-        screenModelScope,
-        SharingStarted.WhileSubscribed(5_000),
-        emptyList()
-    )
+    val chatMessage = _chatMessage.asStateFlow()
 
     private val _newWords = MutableStateFlow<List<String>>(emptyList())
-    val newWords = _newWords.stateIn(
-        screenModelScope,
-        SharingStarted.WhileSubscribed(5_000),
-        emptyList()
-    )
+    val newWords = _newWords.asStateFlow()
 
     private val _showChooseWordOverlay = MutableStateFlow(false)
-    val showChooseWordOverlay = _showChooseWordOverlay.stateIn(
-        screenModelScope,
-        SharingStarted.WhileSubscribed(5_000),
-        false
-    )
+    val showChooseWordOverlay = _showChooseWordOverlay.asStateFlow()
+
+    private val _players = MutableStateFlow<List<PlayerData>>(emptyList())
+    val players = _players.asStateFlow()
 
     private val phase = MutableStateFlow(PhaseChange.Phase.WAITING_FOR_PLAYER)
 
@@ -282,6 +258,10 @@ class GameScreenModel(
                         drawPlayer = data.drawingPlayer
                     }
 
+                    is PlayerList -> {
+                        _players.update { data.players }
+                    }
+
                     is DrawData -> {
                         if (data.motionEvent == DrawData.MOTION_DRAWING) {
                             _drawingPath.update {
@@ -325,5 +305,4 @@ class GameScreenModel(
             socketService.send(Disconnect())
         }
     }
-
 }

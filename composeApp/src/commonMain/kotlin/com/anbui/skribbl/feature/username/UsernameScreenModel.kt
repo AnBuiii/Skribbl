@@ -5,9 +5,8 @@ import cafe.adriel.voyager.core.model.screenModelScope
 import com.anbui.skribbl.domain.repository.SettingRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.shareIn
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -16,17 +15,10 @@ class UsernameScreenModel(
 ) : ScreenModel {
 
     private val _username = MutableStateFlow("")
-    val username = _username.stateIn(
-        screenModelScope,
-        SharingStarted.WhileSubscribed(5_000),
-        ""
-    )
+    val username = _username.asStateFlow()
 
     private val _screenEvent = MutableSharedFlow<UsernameScreenEvent>()
-    val screenEvent = _screenEvent.shareIn(
-        screenModelScope,
-        SharingStarted.WhileSubscribed(5_000),
-    )
+    val screenEvent = _screenEvent.asSharedFlow()
 
     init {
         screenModelScope.launch {

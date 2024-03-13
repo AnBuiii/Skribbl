@@ -53,12 +53,13 @@ class GameScreen : Screen {
         val chatMessages by screenModel.chatMessage.collectAsState()
         val showChosenWord by screenModel.showChooseWordOverlay.collectAsState()
         val newWords by screenModel.newWords.collectAsState()
+        val players by screenModel.players.collectAsState()
 
         val drawerState = rememberDrawerState(DrawerValue.Closed)
 
         ModalNavigationDrawer(
             drawerContent = {
-                PlayerDrawerSheet()
+                PlayerDrawerSheet(players)
             },
             gesturesEnabled = true,
             drawerState = drawerState

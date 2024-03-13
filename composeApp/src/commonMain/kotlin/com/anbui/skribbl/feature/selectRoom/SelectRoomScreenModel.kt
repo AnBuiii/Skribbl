@@ -13,10 +13,13 @@ import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
+import skribbl.composeapp.generated.resources.Res
+import skribbl.composeapp.generated.resources.join_room
 
 class SelectRoomScreenModel(
     private val startGameService: StartGameService,
@@ -24,17 +27,9 @@ class SelectRoomScreenModel(
     private val settingRepository: SettingRepository
 ) : ScreenModel {
     private val _screenState = MutableStateFlow<ScreenState>(ScreenState.READY)
-//    val screenState = _screenState.stateIn(
-//        screenModelScope,
-//        SharingStarted.WhileSubscribed(5_000),
-//        ScreenState.READY
-//    )
 
     private val _screenEvent = MutableSharedFlow<ScreenEvent>()
-    val screenEvent = _screenEvent.shareIn(
-        screenModelScope,
-        SharingStarted.WhileSubscribed(5_000),
-    )
+    val screenEvent = _screenEvent.asSharedFlow()
 
     private val _roomQuery = MutableStateFlow("")
     val roomQuery = _roomQuery.stateIn(
@@ -87,7 +82,8 @@ class SelectRoomScreenModel(
                 }
 
                 is Resource.Success -> {
-                    snackBarRepository.showSnackBar("Join")
+                    _screenState.update { ScreenState.READY }
+                    snackBarRepository.showSnackBar(getString(Res.string.join_room))
                     settingRepository.setRoom(roomName)
                     _screenEvent.emit(ScreenEvent.GoNext)
                 }
