@@ -12,9 +12,8 @@ import com.anbui.skribbl.domain.repository.StartGameService
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
@@ -32,18 +31,10 @@ class SelectRoomScreenModel(
     val screenEvent = _screenEvent.asSharedFlow()
 
     private val _roomQuery = MutableStateFlow("")
-    val roomQuery = _roomQuery.stateIn(
-        screenModelScope,
-        SharingStarted.WhileSubscribed(5_000),
-        ""
-    )
+    val roomQuery = _roomQuery.asStateFlow()
 
     private val _rooms = MutableStateFlow(mockRooms)
-    val room = _rooms.stateIn(
-        screenModelScope,
-        SharingStarted.WhileSubscribed(5_000),
-        emptyList()
-    )
+    val room = _rooms.asStateFlow()
 
     fun changeRoomQuery(value: String) {
         _roomQuery.update { value }

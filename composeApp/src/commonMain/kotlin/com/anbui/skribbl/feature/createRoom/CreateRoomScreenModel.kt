@@ -8,9 +8,8 @@ import com.anbui.skribbl.domain.repository.StartGameService
 import com.anbui.skribbl.feature.selectRoom.ScreenState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.shareIn
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -21,24 +20,13 @@ class CreateRoomScreenModel(
     private val _screenState = MutableStateFlow<ScreenState>(ScreenState.READY)
 
     private val _screenEvent = MutableSharedFlow<CreateRoomScreenEvent>()
-    val screenEvent = _screenEvent.shareIn(
-        screenModelScope,
-        SharingStarted.WhileSubscribed(5_000)
-    )
+    val screenEvent = _screenEvent.asSharedFlow()
 
     private val _roomName = MutableStateFlow("")
-    val roomName = _roomName.stateIn(
-        screenModelScope,
-        SharingStarted.WhileSubscribed(5_000),
-        ""
-    )
+    val roomName = _roomName.asStateFlow()
 
     private val _roomSize = MutableStateFlow("")
-    val roomSize = _roomSize.stateIn(
-        screenModelScope,
-        SharingStarted.WhileSubscribed(5_000),
-        ""
-    )
+    val roomSize = _roomSize.asStateFlow()
 
     fun changeRoomName(value: String) {
         _roomName.update { value }
