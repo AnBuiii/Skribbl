@@ -4,3 +4,4 @@ import com.anbui.skribbl.FocusSkribblApp
 fun MainViewController() = ComposeUIViewController {
     FocusSkribblApp()
 }
+

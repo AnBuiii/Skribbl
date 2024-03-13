@@ -56,6 +56,7 @@ class SocketServiceImpl(
                         when (payload) {
                             is Ping -> {
                                 val pong: BaseModel = Ping()
+                                Napier.d { "send ping" }
                                 send(pong)
                             }
 
@@ -100,10 +101,22 @@ class SocketServiceImpl(
         }
     }
 
+    override suspend fun pause() {
+        if (session == null) return
+        _state.emit(SocketService.STATE.PAUSE)
+    }
+
+    override suspend fun reconnect() {
+        if (session == null) return
+        if (_state.value != SocketService.STATE.PAUSE) return
+        _state.emit(SocketService.STATE.RESUME)
+    }
+
     override suspend fun disconnect(reason: CloseReason?) {
+        if (session == null) return
         val closeReason = reason ?: CloseReason(CloseReason.Codes.VIOLATED_POLICY, "unknown error")
         session?.close(closeReason)
         session = null
-        _state.emit(SocketService.STATE.ONGOING)
+        _state.emit(SocketService.STATE.READY)
     }
 }

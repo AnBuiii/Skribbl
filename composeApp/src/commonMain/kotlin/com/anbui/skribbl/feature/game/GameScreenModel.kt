@@ -20,8 +20,10 @@ import com.anbui.skribbl.domain.repository.SettingRepository
 import com.anbui.skribbl.domain.repository.SnackBarRepository
 import com.anbui.skribbl.domain.repository.SocketService
 import io.github.aakira.napier.Napier
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -46,6 +48,9 @@ class GameScreenModel(
 ) : StateScreenModel<Int>(3) {
     private var roomName = ""
     private var playerName = ""
+
+    private val _gameEvent = MutableSharedFlow<GameScreenEvent>()
+    val gameEvent = _gameEvent.asSharedFlow()
 
     private val _drawingPath = MutableStateFlow<List<DrawData>>(emptyList())
     val drawingPath = _drawingPath
@@ -235,6 +240,19 @@ class GameScreenModel(
                         )
                         socketService.send(joinRoomHandshake)
                     }
+
+                    SocketService.STATE.RESUME -> {
+                        val joinRoomHandshake = JoinRoomHandshake(
+                            settingRepository.getName(),
+                            settingRepository.getClientId(),
+                            settingRepository.getRoomName()
+                        )
+                        socketService.send(joinRoomHandshake)
+                    }
+
+                    else -> {
+
+                    }
                 }
             }
 
@@ -247,6 +265,7 @@ class GameScreenModel(
                 when (data) {
                     is GameError -> {
                         snackBarRepository.showSnackBar(getString(GameError.gameErrorMapper(data.errorType)))
+                        _gameEvent.emit(GameScreenEvent.Back)
                     }
 
                     is NewWords -> {
@@ -305,4 +324,8 @@ class GameScreenModel(
             socketService.send(Disconnect())
         }
     }
+}
+
+sealed class GameScreenEvent {
+    data object Back : GameScreenEvent()
 }

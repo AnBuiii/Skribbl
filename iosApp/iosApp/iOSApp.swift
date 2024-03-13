@@ -7,9 +7,10 @@ struct iOSApp: App {
         NapierProxyKt.debugBuild()
         KoinProxyKt.koinInit()
     }
-	var body: some Scene {
-		WindowGroup {
-			ContentView()
-		}
-	}
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+
 }

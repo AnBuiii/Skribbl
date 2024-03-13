@@ -22,9 +22,13 @@ interface SocketService {
 
     suspend fun <T> send(data: T)
 
+    suspend fun pause()
+
+    suspend fun reconnect()
+
     suspend fun disconnect(reason: CloseReason?)
 
     enum class STATE {
-        READY, ONGOING, ERROR
+        READY, ONGOING, ERROR, PAUSE, RESUME
     }
 }

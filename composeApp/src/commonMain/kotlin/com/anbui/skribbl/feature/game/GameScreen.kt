@@ -20,6 +20,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -28,6 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.anbui.skribbl.core.presentation.component.SkribblColumn
 import com.anbui.skribbl.core.presentation.component.SkribblTextField
 import com.anbui.skribbl.core.presentation.theme.Color
@@ -44,6 +47,7 @@ class GameScreen : Screen {
     override fun Content() {
         val screenModel: GameScreenModel = getScreenModel()
         val screenHeight = getScreenHeight()
+        val navigator = LocalNavigator.currentOrThrow
 
         val scope = rememberCoroutineScope()
 
@@ -56,6 +60,14 @@ class GameScreen : Screen {
         val players by screenModel.players.collectAsState()
 
         val drawerState = rememberDrawerState(DrawerValue.Closed)
+
+        LaunchedEffect(Unit) {
+            screenModel.gameEvent.collect { event ->
+                if (event == GameScreenEvent.Back) {
+                    navigator.pop()
+                }
+            }
+        }
 
         ModalNavigationDrawer(
             drawerContent = {
