@@ -58,6 +58,7 @@ class GameScreen : Screen {
         val showChosenWord by screenModel.showChooseWordOverlay.collectAsState()
         val newWords by screenModel.newWords.collectAsState()
         val players by screenModel.players.collectAsState()
+        val playerName by screenModel.playerName.collectAsState()
 
         val drawerState = rememberDrawerState(DrawerValue.Closed)
 
@@ -122,7 +123,8 @@ class GameScreen : Screen {
                                     }
                                 }
                             },
-                            onVoice = {}
+                            onVoice = {},
+                            playerName = playerName
                         )
                     }
                 }

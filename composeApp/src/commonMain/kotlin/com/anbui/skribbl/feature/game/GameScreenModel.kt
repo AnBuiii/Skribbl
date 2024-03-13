@@ -1,8 +1,10 @@
 package com.anbui.skribbl.feature.game
 
 import androidx.compose.ui.graphics.Path
+import arrow.core.Either
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.anbui.skribbl.core.data.remote.response.message.Announcement
 import com.anbui.skribbl.core.data.remote.response.message.ChatMessage
 import com.anbui.skribbl.core.data.remote.response.message.ChosenWord
 import com.anbui.skribbl.core.data.remote.response.message.Disconnect
@@ -46,8 +48,12 @@ class GameScreenModel(
     private val snackBarRepository: SnackBarRepository,
     private val settingRepository: SettingRepository,
 ) : StateScreenModel<Int>(3) {
-    private var roomName = ""
-    private var playerName = ""
+
+    private val _roomName = MutableStateFlow("")
+    val roomName = _roomName.asStateFlow()
+
+    private val _playerName = MutableStateFlow("")
+    val playerName = _playerName.asStateFlow()
 
     private val _gameEvent = MutableSharedFlow<GameScreenEvent>()
     val gameEvent = _gameEvent.asSharedFlow()
@@ -73,7 +79,8 @@ class GameScreenModel(
     private val _chat = MutableStateFlow("")
     val chat = _chat.asStateFlow()
 
-    private val _chatMessage = MutableStateFlow<List<ChatMessage>>(emptyList())
+    private val _chatMessage =
+        MutableStateFlow<List<Either<ChatMessage, Announcement>>>(emptyList())
     val chatMessage = _chatMessage.asStateFlow()
 
     private val _newWords = MutableStateFlow<List<String>>(emptyList())
@@ -99,13 +106,13 @@ class GameScreenModel(
 
     private fun getUserInformation() {
         screenModelScope.launch(dispatcher.io) {
-            roomName = settingRepository.getRoomName()
-            playerName = settingRepository.getName()
+            _roomName.update { settingRepository.getRoomName() }
+            _playerName.update { settingRepository.getName() }
         }
     }
 
     private fun canDraw(): Boolean {
-        return phase.value == PhaseChange.Phase.GAME_RUNNING && drawPlayer == playerName
+        return phase.value == PhaseChange.Phase.GAME_RUNNING && drawPlayer == _playerName.value
     }
 
     fun onEvent(event: DrawEvent) {
@@ -154,7 +161,7 @@ class GameScreenModel(
                 if (!canDraw()) return
                 screenModelScope.launch {
                     val drawData = DrawData(
-                        roomName,
+                        roomName.value,
                         color = _color.value,
                         thickness = _thickness.value,
                         x = event.offset.x,
@@ -181,7 +188,11 @@ class GameScreenModel(
             DrawEvent.SendChat -> {
                 screenModelScope.launch(dispatcher.io) {
                     val chatMessage =
-                        ChatMessage(from = playerName, roomName = roomName, message = _chat.value)
+                        ChatMessage(
+                            from = _playerName.value,
+                            roomName = roomName.value,
+                            message = _chat.value
+                        )
                     socketService.send(chatMessage)
                     _chat.update { "" }
                 }
@@ -304,7 +315,11 @@ class GameScreenModel(
                     }
 
                     is ChatMessage -> {
-                        _chatMessage.update { it + data }
+                        _chatMessage.update { it + Either.Left(data) }
+                    }
+
+                    is Announcement -> {
+                        _chatMessage.update { it + Either.Right(data) }
                     }
 
                     else -> {

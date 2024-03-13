@@ -10,6 +10,7 @@ androidx-core-ktx = "1.12.0"
 androidx-espresso-core = "3.5.1"
 androidx-material = "1.11.0"
 androidx-test-junit = "1.1.5"
+arrow = "1.2.1"
 compose = "1.6.2"
 compose-plugin = "1.6.0"
 junit = "4.13.2"
@@ -74,6 +75,9 @@ multiplatformSettings-coroutines = { module = "com.russhwolf:multiplatform-setti
 
 # detekt
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+
+# arror
+arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
