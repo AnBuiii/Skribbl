@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +26,6 @@ import com.anbui.skribbl.core.presentation.theme.SpaceMedium
 import com.anbui.skribbl.core.presentation.theme.debouncedClick
 import com.anbui.skribbl.feature.selectRoom.SelectRoomScreen
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import skribbl.composeapp.generated.resources.Res
 import skribbl.composeapp.generated.resources.app_name
 import skribbl.composeapp.generated.resources.choose_a_username
@@ -91,14 +91,8 @@ fun UsernameScreenContent(
 
             SkribblTextButton(
                 stringResource(Res.string.next),
-                modifier = Modifier.align(Alignment.End),
+                modifier = Modifier.align(Alignment.End).width(72.dp),
                 onClick = debouncedClick { onNext() })
         }
     }
-}
-
-@Preview
-@Composable
-fun UsernameScreenPreview() {
-    UsernameScreenContent("asd", {}, {})
 }

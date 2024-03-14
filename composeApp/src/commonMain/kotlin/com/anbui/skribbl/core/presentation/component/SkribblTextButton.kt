@@ -6,18 +6,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.anbui.skribbl.core.presentation.theme.Color
-import com.anbui.skribbl.core.presentation.theme.SpaceMedium
-import com.anbui.skribbl.core.presentation.theme.SpaceSmall
+import com.anbui.skribbl.core.presentation.theme.SpaceTiny
 import com.anbui.skribbl.core.presentation.theme.debounceClickable
 
 @Composable
 fun SkribblTextButton(
     text: String,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    style: TextStyle = MaterialTheme.typography.titleMedium
 
 ) {
     Box(
@@ -30,10 +32,11 @@ fun SkribblTextButton(
                 color = Color.Black,
                 shape = MaterialTheme.shapes.small
             )
-            .padding(vertical = SpaceSmall, horizontal = SpaceMedium)
-            .then(modifier)
+            .padding(vertical = SpaceTiny)
+            .then(modifier),
+        contentAlignment = Alignment.Center
 
     ) {
-        Text(text, style = MaterialTheme.typography.titleMedium)
+        Text(text, style = style)
     }
 }

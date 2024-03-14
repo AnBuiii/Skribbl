@@ -12,13 +12,13 @@ fun SkribblTypography(): Typography {
         bodyMedium = TextStyle(
             fontFamily = Fonts.handWriting(),
             fontWeight = FontWeight.Medium,
-            fontSize = 18.sp,
+            fontSize = 20.sp,
             lineHeight = 20.sp
         ),
         bodyLarge = TextStyle(
             fontFamily = Fonts.handWriting(),
             fontWeight = FontWeight.Medium,
-            fontSize = 18.sp,
+            fontSize = 22.sp,
             lineHeight = 20.sp,
         ),
         headlineLarge = TextStyle(
@@ -26,9 +26,20 @@ fun SkribblTypography(): Typography {
             fontWeight = FontWeight.Bold,
             fontSize = 64.sp,
         ),
+
+        titleLarge = TextStyle(
+            fontFamily = Fonts.handWriting(),
+            fontWeight = FontWeight.Bold,
+            fontSize = 32.sp,
+        ),
         titleMedium = TextStyle(
             fontFamily = Fonts.handWriting(),
             fontWeight = FontWeight.Bold,
+            fontSize = 24.sp,
+        ),
+        titleSmall = TextStyle(
+            fontFamily = Fonts.handWriting(),
+            fontWeight = FontWeight.Normal,
             fontSize = 24.sp,
         )
     )

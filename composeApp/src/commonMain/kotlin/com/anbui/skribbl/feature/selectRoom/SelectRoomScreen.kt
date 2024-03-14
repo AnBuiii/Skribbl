@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
@@ -20,6 +21,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -34,7 +36,7 @@ import com.anbui.skribbl.feature.game.GameScreen
 import com.anbui.skribbl.feature.selectRoom.components.RoomItem
 import org.jetbrains.compose.resources.stringResource
 import skribbl.composeapp.generated.resources.Res
-import skribbl.composeapp.generated.resources.create_a_new_room
+import skribbl.composeapp.generated.resources.create_room
 import skribbl.composeapp.generated.resources.no_rooms_found
 import skribbl.composeapp.generated.resources.search_for_rooms
 
@@ -94,7 +96,11 @@ fun SelectRoomContent(
             IconButton(
                 onClick = onClickSearchRoom,
             ) {
-                Icon(Icons.Default.Refresh, contentDescription = null)
+                Icon(
+                    Icons.Default.Refresh,
+                    contentDescription = null,
+                    modifier = Modifier.size(48.dp)
+                )
             }
         }
 
@@ -119,7 +125,7 @@ fun SelectRoomContent(
                     ) {
                         Text(
                             stringResource(Res.string.no_rooms_found),
-                            style = MaterialTheme.typography.headlineLarge
+                            style = MaterialTheme.typography.titleLarge
                         )
                     }
                 }
@@ -132,7 +138,7 @@ fun SelectRoomContent(
         ) {
             Text("or", style = MaterialTheme.typography.bodyMedium)
             Text(
-                stringResource(Res.string.create_a_new_room),
+                stringResource(Res.string.create_room).uppercase(),
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.debounceClickable {
                     onClickCreateRoom()

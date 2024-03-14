@@ -1,6 +1,7 @@
 package com.anbui.skribbl.core.presentation.component
 
 
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -14,7 +15,8 @@ fun SkribblTextField(
     text: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    hint: String? = null
+    hint: String? = null,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -26,14 +28,10 @@ fun SkribblTextField(
                 Text(it, style = MaterialTheme.typography.bodyMedium)
             }
         },
-//        placeholder = hint?.let {
-//            {
-//                Text(it, style = MaterialTheme.typography.bodyMedium)
-//            }
-//        },
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Color.Black,
             unfocusedBorderColor = Color.Black,
         ),
+        keyboardOptions = keyboardOptions
     )
 }
