@@ -28,6 +28,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import skribbl.composeapp.generated.resources.Res
 import skribbl.composeapp.generated.resources.app_name
+import skribbl.composeapp.generated.resources.next
 
 class UsernameScreen : Screen {
     @Composable
@@ -82,7 +83,7 @@ fun UsernameScreenContent(
             Spacer(modifier = Modifier.height(SpaceMedium))
 
             SkribblTextButton(
-                "Next",
+                stringResource(Res.string.next),
                 modifier = Modifier.align(Alignment.End),
                 onClick = debouncedClick { onNext() })
         }
