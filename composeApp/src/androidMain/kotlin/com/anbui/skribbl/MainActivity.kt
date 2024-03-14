@@ -38,4 +38,9 @@ class MainActivity : ComponentActivity() {
             socket.reconnect()
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Napier.d { "destroy" }
+    }
 }

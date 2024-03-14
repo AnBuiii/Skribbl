@@ -22,6 +22,7 @@ import com.anbui.skribbl.core.presentation.component.SkribblColumn
 import com.anbui.skribbl.core.presentation.component.SkribblTextButton
 import com.anbui.skribbl.core.presentation.component.SkribblTextField
 import com.anbui.skribbl.core.presentation.theme.SpaceMedium
+import com.anbui.skribbl.core.presentation.theme.debouncedClick
 import com.anbui.skribbl.feature.selectRoom.SelectRoomScreen
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -80,7 +81,10 @@ fun UsernameScreenContent(
             )
             Spacer(modifier = Modifier.height(SpaceMedium))
 
-            SkribblTextButton("Next", modifier = Modifier.align(Alignment.End), onClick = onNext)
+            SkribblTextButton(
+                "Next",
+                modifier = Modifier.align(Alignment.End),
+                onClick = debouncedClick { onNext() })
         }
     }
 }

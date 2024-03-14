@@ -1,7 +1,6 @@
 package com.anbui.skribbl.core.presentation.component
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -11,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.anbui.skribbl.core.presentation.theme.Color
 import com.anbui.skribbl.core.presentation.theme.SpaceSmall
+import com.anbui.skribbl.core.presentation.theme.debounceClickable
 
 @Composable
 fun SkribblTextButton(
@@ -21,7 +21,7 @@ fun SkribblTextButton(
 ) {
     Box(
         modifier = Modifier
-            .clickable {
+            .debounceClickable {
                 onClick()
             }
             .border(

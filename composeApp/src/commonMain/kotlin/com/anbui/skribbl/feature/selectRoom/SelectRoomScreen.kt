@@ -1,6 +1,5 @@
 package com.anbui.skribbl.feature.selectRoom
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,6 +28,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.anbui.skribbl.core.presentation.component.SkribblColumn
 import com.anbui.skribbl.core.presentation.component.SkribblTextField
 import com.anbui.skribbl.core.presentation.theme.SpaceMedium
+import com.anbui.skribbl.core.presentation.theme.debounceClickable
 import com.anbui.skribbl.domain.model.Room
 import com.anbui.skribbl.feature.createRoom.CreateRoomScreen
 import com.anbui.skribbl.feature.game.GameScreen
@@ -93,7 +93,7 @@ fun SelectRoomContent(
                 hint = stringResource(Res.string.search_for_rooms)
             )
             IconButton(
-                onClick = onClickSearchRoom
+                onClick = onClickSearchRoom,
             ) {
                 Icon(Icons.Default.CheckCircle, contentDescription = null)
             }
@@ -135,7 +135,7 @@ fun SelectRoomContent(
             Text(
                 stringResource(Res.string.create_a_new_room),
                 style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.clickable {
+                modifier = Modifier.debounceClickable {
                     onClickCreateRoom()
                 }
             )

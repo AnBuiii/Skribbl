@@ -1,7 +1,6 @@
 package com.anbui.skribbl.feature.selectRoom.components
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -13,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.anbui.skribbl.core.presentation.theme.Color
 import com.anbui.skribbl.core.presentation.theme.SpaceMedium
+import com.anbui.skribbl.core.presentation.theme.debounceClickable
 import com.anbui.skribbl.domain.model.Room
 
 @Composable
@@ -23,7 +23,7 @@ fun RoomItem(
 ) {
     Row(
         modifier = modifier
-            .clickable { onClick() }
+            .debounceClickable { onClick() }
             .border(
                 width = 1.dp,
                 color = Color.Black,
