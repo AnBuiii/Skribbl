@@ -28,7 +28,9 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import skribbl.composeapp.generated.resources.Res
 import skribbl.composeapp.generated.resources.app_name
+import skribbl.composeapp.generated.resources.choose_a_username
 import skribbl.composeapp.generated.resources.next
+import skribbl.composeapp.generated.resources.username
 
 class UsernameScreen : Screen {
     @Composable
@@ -75,11 +77,16 @@ fun UsernameScreenContent(
         )
 
         Column {
+            Text(
+                stringResource(Res.string.choose_a_username),
+                style = MaterialTheme.typography.titleMedium
+            )
             SkribblTextField(
                 username,
                 onValueChange = onChangeUsername,
-                hint = "Choose username"
+                hint = stringResource(Res.string.username)
             )
+
             Spacer(modifier = Modifier.height(SpaceMedium))
 
             SkribblTextButton(

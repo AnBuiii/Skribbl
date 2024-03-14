@@ -24,8 +24,12 @@ fun SkribblTypography(): Typography {
         headlineLarge = TextStyle(
             fontFamily = Fonts.handWriting(),
             fontWeight = FontWeight.Bold,
-            fontSize = 32.sp,
-            lineHeight = 40.sp
+            fontSize = 64.sp,
+        ),
+        titleMedium = TextStyle(
+            fontFamily = Fonts.handWriting(),
+            fontWeight = FontWeight.Bold,
+            fontSize = 24.sp,
         )
     )
 }

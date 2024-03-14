@@ -21,14 +21,19 @@ fun SkribblTextField(
         value = text,
         textStyle = MaterialTheme.typography.bodyMedium,
         onValueChange = onValueChange,
-        placeholder = hint?.let {
+        label = hint?.let {
             {
                 Text(it, style = MaterialTheme.typography.bodyMedium)
             }
         },
+//        placeholder = hint?.let {
+//            {
+//                Text(it, style = MaterialTheme.typography.bodyMedium)
+//            }
+//        },
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Color.Black,
-            unfocusedBorderColor = Color.Black.copy(alpha = 0.8f),
-        )
+            unfocusedBorderColor = Color.Black,
+        ),
     )
 }

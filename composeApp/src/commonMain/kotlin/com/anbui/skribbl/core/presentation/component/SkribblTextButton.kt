@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.anbui.skribbl.core.presentation.theme.Color
+import com.anbui.skribbl.core.presentation.theme.SpaceMedium
 import com.anbui.skribbl.core.presentation.theme.SpaceSmall
 import com.anbui.skribbl.core.presentation.theme.debounceClickable
 
@@ -25,14 +26,14 @@ fun SkribblTextButton(
                 onClick()
             }
             .border(
-                width = 1.dp,
+                width = 2.dp,
                 color = Color.Black,
                 shape = MaterialTheme.shapes.small
             )
-            .padding(SpaceSmall)
+            .padding(vertical = SpaceSmall, horizontal = SpaceMedium)
             .then(modifier)
 
     ) {
-        Text(text, style = MaterialTheme.typography.bodyLarge)
+        Text(text, style = MaterialTheme.typography.titleMedium)
     }
 }
