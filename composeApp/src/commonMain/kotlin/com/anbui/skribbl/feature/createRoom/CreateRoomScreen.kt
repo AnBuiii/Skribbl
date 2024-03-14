@@ -24,8 +24,9 @@ import com.anbui.skribbl.core.presentation.theme.SpaceLarge
 import com.anbui.skribbl.core.presentation.theme.SpaceMedium
 import org.jetbrains.compose.resources.stringResource
 import skribbl.composeapp.generated.resources.Res
-import skribbl.composeapp.generated.resources.create
 import skribbl.composeapp.generated.resources.create_room
+import skribbl.composeapp.generated.resources.room_name
+import skribbl.composeapp.generated.resources.room_size
 
 class CreateRoomScreen : Screen {
     @Composable
@@ -78,7 +79,8 @@ fun CreateRoomScreenContent(
             SkribblTextField(
                 modifier = Modifier.fillMaxWidth(),
                 text = roomName,
-                onValueChange = onChangeRoomName
+                onValueChange = onChangeRoomName,
+                hint = stringResource(Res.string.room_name)
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -88,9 +90,13 @@ fun CreateRoomScreenContent(
                 SkribblTextField(
                     modifier = Modifier.weight(1f),
                     text = roomSize,
-                    onValueChange = onChangeRoomSize
+                    onValueChange = onChangeRoomSize,
+                    hint = stringResource(Res.string.room_size)
                 )
-                SkribblTextButton(text = stringResource(Res.string.create), onClick = onCreateRoom)
+                SkribblTextButton(
+                    text = stringResource(Res.string.create_room),
+                    onClick = onCreateRoom
+                )
             }
         }
     }

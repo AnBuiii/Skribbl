@@ -16,7 +16,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -37,6 +36,7 @@ import com.anbui.skribbl.core.presentation.theme.Color
 import com.anbui.skribbl.feature.game.components.ChatSection
 import com.anbui.skribbl.feature.game.components.ChooseWordOverlay
 import com.anbui.skribbl.feature.game.components.PlayerDrawerSheet
+import com.anbui.skribbl.feature.game.components.ProgressBar
 import com.anbui.skribbl.feature.game.components.SkribblCanvas
 import com.anbui.skribbl.feature.game.components.ToolBar
 import com.anbui.skribbl.platform.Platform
@@ -103,9 +103,10 @@ class GameScreen : Screen {
                             onDraw = {
                                 screenModel.onEvent(DrawEvent.OnDraw(it))
                             }
-
                         )
-                        HorizontalDivider(thickness = 2.dp)
+
+                        ProgressBar(time.toFloat() / 60)
+//                        HorizontalDivider(thickness = 2.dp)
 
                         ChatSection(
                             modifier = Modifier
@@ -125,7 +126,6 @@ class GameScreen : Screen {
                             },
                             onVoice = {},
                             playerName = playerName,
-                            time = time
                         )
                     }
                 }

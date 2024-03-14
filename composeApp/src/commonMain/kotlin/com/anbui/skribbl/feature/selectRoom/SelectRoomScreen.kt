@@ -11,14 +11,13 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.core.screen.Screen
@@ -77,7 +76,7 @@ fun SelectRoomContent(
     onJoinRoom: (roomName: String) -> Unit,
     onClickCreateRoom: () -> Unit
 ) {
-    val roomsEmpty by remember(rooms) { derivedStateOf { rooms.isEmpty() } }
+    val roomsEmpty by derivedStateOf { rooms.isEmpty() }
 
     SkribblColumn(
         verticalArrangement = Arrangement.SpaceBetween
@@ -95,7 +94,7 @@ fun SelectRoomContent(
             IconButton(
                 onClick = onClickSearchRoom,
             ) {
-                Icon(Icons.Default.CheckCircle, contentDescription = null)
+                Icon(Icons.Default.Refresh, contentDescription = null)
             }
         }
 
