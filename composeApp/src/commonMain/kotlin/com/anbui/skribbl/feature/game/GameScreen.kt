@@ -39,14 +39,14 @@ import com.anbui.skribbl.feature.game.components.ChooseWordOverlay
 import com.anbui.skribbl.feature.game.components.PlayerDrawerSheet
 import com.anbui.skribbl.feature.game.components.SkribblCanvas
 import com.anbui.skribbl.feature.game.components.ToolBar
-import com.anbui.skribbl.platform.getScreenHeight
+import com.anbui.skribbl.platform.Platform
 import kotlinx.coroutines.launch
 
 class GameScreen : Screen {
     @Composable
     override fun Content() {
         val screenModel: GameScreenModel = getScreenModel()
-        val screenHeight = getScreenHeight()
+        val screenHeight = Platform.INSTANCE.getScreenHeight()
         val navigator = LocalNavigator.currentOrThrow
 
         val scope = rememberCoroutineScope()

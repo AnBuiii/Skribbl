@@ -14,9 +14,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        socket = get()
         Napier.base(DebugAntilog())
         setContent {
-            socket = get()
             FocusSkribblApp()
         }
     }

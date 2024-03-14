@@ -2,7 +2,7 @@ package com.anbui.skribbl.core.repository
 
 import com.anbui.skribbl.core.data.local.SettingManager
 import com.anbui.skribbl.domain.repository.SettingRepository
-import com.anbui.skribbl.platform.randomUUID
+import com.anbui.skribbl.platform.Platform
 import kotlinx.coroutines.flow.firstOrNull
 
 class SettingRepositoryImpl(
@@ -20,7 +20,7 @@ class SettingRepositoryImpl(
         val clientId = settingManager.getString(SettingManager.CLIENT_ID).firstOrNull()
         if (clientId != null) return clientId
 
-        val newClientId = randomUUID()
+        val newClientId = Platform.INSTANCE.getRandomUUID()
         settingManager.setString(SettingManager.CLIENT_ID, newClientId)
 
         return newClientId

@@ -18,7 +18,7 @@ import com.anbui.skribbl.feature.game.GameScreenModel
 import com.anbui.skribbl.feature.selectRoom.SelectRoomScreenModel
 import com.anbui.skribbl.feature.username.UsernameScreenModel
 import com.anbui.skribbl.main.MainScreenModel
-import com.anbui.skribbl.platform.engine
+import com.anbui.skribbl.platform.Platform
 import io.github.aakira.napier.Napier
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
@@ -40,7 +40,7 @@ fun commonModule(): Module = module {
 
     // HttpClient
     single<HttpClient> {
-        HttpClient(engine) {
+        HttpClient(Platform.INSTANCE.getEngine()) {
             install(Logging) {
                 logger = object : Logger {
                     override fun log(message: String) {
