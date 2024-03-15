@@ -91,9 +91,13 @@ class GameScreenModel(
     private val _players = MutableStateFlow<List<PlayerData>>(emptyList())
     val players = _players.asStateFlow()
 
+    private val _words = MutableStateFlow("")
+    val word = _words.asStateFlow()
+
     private val phase = MutableStateFlow(PhaseChange.Phase.WAITING_FOR_PLAYER)
 
     private var drawPlayer = ""
+
 
     private val _timer = MutableStateFlow("0")
     val time = _timer.asStateFlow()
@@ -286,6 +290,7 @@ class GameScreenModel(
 
                     is GameState -> {
                         drawPlayer = data.drawingPlayer
+                        _words.update { data.word }
                     }
 
                     is PlayerList -> {
