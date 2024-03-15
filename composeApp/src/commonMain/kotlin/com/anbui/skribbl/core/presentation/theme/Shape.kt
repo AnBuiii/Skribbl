@@ -66,3 +66,55 @@ fun Modifier.drawChat(color: Color = Color.White) =
             drawPath(path, SkribblColor.Black, style = Stroke(2f)) // stroke
         }
     }
+
+fun Modifier.drawMyChat(color: Color = Color.White) =
+    composed {
+        drawBehind {
+            val path = Path()
+
+            val height = size.height
+            val width = size.width
+            val corner = 10f
+
+            path.apply {
+                moveTo(corner, 0f)
+                lineTo(width, 0f)
+                lineTo(width - corner, corner)
+                lineTo(width - corner, height - corner)
+                arcTo(
+                    Rect(
+                        topLeft = Offset(width - corner * 3, height - corner * 2),
+                        bottomRight = Offset(width - corner, height)
+                    ),
+                    forceMoveTo = false,
+                    startAngleDegrees = 0f,
+                    sweepAngleDegrees = 90f
+
+                )
+
+                lineTo(corner, height)
+                arcTo(
+                    Rect(
+                        topLeft = Offset(0f, height - 2 * corner),
+                        bottomRight = Offset(2 * corner, height)
+                    ),
+                    forceMoveTo = false,
+                    startAngleDegrees = 90f,
+                    sweepAngleDegrees = 90f
+                )
+                lineTo(0f, corner)
+                arcTo(
+                    Rect(
+                        topLeft = Offset(0f, 0f),
+                        bottomRight = Offset(corner * 2, corner * 2)
+                    ),
+                    forceMoveTo = false,
+                    startAngleDegrees = 180f,
+                    sweepAngleDegrees = 90f
+                )
+            }
+            drawPath(path, color) // background
+
+            drawPath(path, SkribblColor.Black, style = Stroke(2f)) // stroke
+        }
+    }
