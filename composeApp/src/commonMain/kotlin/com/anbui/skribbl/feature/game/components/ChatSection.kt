@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import arrow.core.Either
 import com.anbui.skribbl.core.data.remote.response.message.Announcement
 import com.anbui.skribbl.core.data.remote.response.message.ChatMessage
-import com.anbui.skribbl.core.presentation.theme.Color
+import com.anbui.skribbl.core.presentation.theme.SkribblColor
 import com.anbui.skribbl.core.presentation.theme.SpaceMedium
 
 @Composable
@@ -50,7 +50,7 @@ fun ChatSection(
             }
         }
         LazyColumn(
-            modifier = Modifier.background(Color.Yellow),
+            modifier = Modifier.background(SkribblColor.Yellow),
             reverseLayout = true,
             verticalArrangement = Arrangement.spacedBy(SpaceMedium),
             contentPadding = PaddingValues(vertical = SpaceMedium)

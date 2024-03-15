@@ -11,7 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.anbui.skribbl.core.presentation.theme.Color
+import com.anbui.skribbl.core.presentation.theme.SkribblColor
 import com.anbui.skribbl.core.presentation.theme.SpaceSmall
 
 /**
@@ -23,7 +23,7 @@ fun ToolBar(
     onUndo: () -> Unit
 ) {
     Row(
-        modifier = modifier.fillMaxWidth().background(Color.White).padding(SpaceSmall),
+        modifier = modifier.fillMaxWidth().background(SkribblColor.White).padding(SpaceSmall),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         IconButton(onClick = onUndo) {

@@ -8,7 +8,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.anbui.skribbl.core.presentation.theme.Color
+import com.anbui.skribbl.core.presentation.theme.SkribblColor
 
 @Composable
 fun SkribblTextField(
@@ -29,8 +29,8 @@ fun SkribblTextField(
             }
         },
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = Color.Black,
-            unfocusedBorderColor = Color.Black,
+            focusedBorderColor = SkribblColor.Black,
+            unfocusedBorderColor = SkribblColor.Black,
         ),
         keyboardOptions = keyboardOptions
     )

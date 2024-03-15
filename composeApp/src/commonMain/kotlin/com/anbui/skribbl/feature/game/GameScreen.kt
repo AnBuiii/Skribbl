@@ -32,7 +32,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.anbui.skribbl.core.presentation.component.SkribblColumn
 import com.anbui.skribbl.core.presentation.component.SkribblTextField
-import com.anbui.skribbl.core.presentation.theme.Color
+import com.anbui.skribbl.core.presentation.theme.SkribblColor
 import com.anbui.skribbl.feature.game.components.ChatSection
 import com.anbui.skribbl.feature.game.components.ChooseWordOverlay
 import com.anbui.skribbl.feature.game.components.PlayerDrawerSheet
@@ -91,7 +91,7 @@ class GameScreen : Screen {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .weight(3f)
-                                .background(Color.Yellow),
+                                .background(SkribblColor.Yellow),
                             drawnPath = drawnPath,
                             drawingPath = drawingPath,
                             onBeginDraw = {
