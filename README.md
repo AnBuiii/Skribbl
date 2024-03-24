@@ -4,7 +4,7 @@
 
 ## About
 - This game got inspired from [Philipp Lackner](https://www.youtube.com/@PhilippLackner), you can look for original game [Doodle Kong](https://www.youtube.com/watch?v=C-DYZopXH68)
-- The original game built with old Android technology, so I want it to be updated with modern technology ☺️
+- The original game built with old Android technology, so I want it to be updated with modern stuff ☺️
 - Client and Server communicate through RESTful API and Websocket, you can look for my Skribbl-Server [here](https://github.com/AnBuiii/Skribbl-Server)
 
 ## The game 🎲
