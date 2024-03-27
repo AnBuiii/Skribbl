@@ -67,6 +67,7 @@ fun UsernameScreenContent(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         Text(
             stringResource(Res.string.app_name),
             style = MaterialTheme.typography.headlineLarge

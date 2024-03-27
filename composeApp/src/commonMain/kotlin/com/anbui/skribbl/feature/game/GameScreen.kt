@@ -10,13 +10,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,7 +33,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.anbui.skribbl.core.presentation.component.SkribblColumn
 import com.anbui.skribbl.core.presentation.component.SkribblTextField
-import com.anbui.skribbl.core.presentation.theme.Color
+import com.anbui.skribbl.core.presentation.theme.SkribblColor
 import com.anbui.skribbl.feature.game.components.ChatSection
 import com.anbui.skribbl.feature.game.components.ChooseWordOverlay
 import com.anbui.skribbl.feature.game.components.PlayerDrawerSheet
@@ -60,6 +61,7 @@ class GameScreen : Screen {
         val players by screenModel.players.collectAsState()
         val playerName by screenModel.playerName.collectAsState()
         val time by screenModel.time.collectAsState()
+        val word by screenModel.word.collectAsState()
 
         val drawerState = rememberDrawerState(DrawerValue.Closed)
 
@@ -91,7 +93,7 @@ class GameScreen : Screen {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .weight(3f)
-                                .background(Color.Yellow),
+                                .background(SkribblColor.Yellow),
                             drawnPath = drawnPath,
                             drawingPath = drawingPath,
                             onBeginDraw = {
@@ -107,6 +109,12 @@ class GameScreen : Screen {
 
                         ProgressBar(time.toFloat() / 60)
 //                        HorizontalDivider(thickness = 2.dp)
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(word, style = MaterialTheme.typography.bodyLarge)
+                        }
 
                         ChatSection(
                             modifier = Modifier
@@ -135,7 +143,7 @@ class GameScreen : Screen {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.align(Alignment.BottomCenter)
-                        .background(MaterialTheme.colors.background)
+                        .background(MaterialTheme.colorScheme.background)
                         .height(56.dp)
                 ) {
                     SkribblTextField(

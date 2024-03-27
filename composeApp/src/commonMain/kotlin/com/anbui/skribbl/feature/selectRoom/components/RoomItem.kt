@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.anbui.skribbl.core.presentation.theme.Color
+import com.anbui.skribbl.core.presentation.theme.SkribblColor
 import com.anbui.skribbl.core.presentation.theme.SpaceMedium
 import com.anbui.skribbl.core.presentation.theme.debounceClickable
 import com.anbui.skribbl.domain.model.Room
@@ -26,7 +26,7 @@ fun RoomItem(
             .debounceClickable { onClick() }
             .border(
                 width = 1.dp,
-                color = Color.Black,
+                color = SkribblColor.Black,
                 shape = MaterialTheme.shapes.small
             ).padding(SpaceMedium),
         horizontalArrangement = Arrangement.SpaceBetween,

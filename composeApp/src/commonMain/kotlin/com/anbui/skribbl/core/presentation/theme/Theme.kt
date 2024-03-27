@@ -9,11 +9,11 @@ import androidx.compose.runtime.Composable
 private val DarkColorScheme = darkColorScheme()
 
 private val LightColorScheme = lightColorScheme(
-    primary = Color.Black,
-    inversePrimary = Color.Bright_Orange,
-    onPrimary = Color.White,
-    secondary = Color.Green,
-    onSecondary = Color.Black
+    primary = SkribblColor.Black,
+    inversePrimary = SkribblColor.Bright_Orange,
+    onPrimary = SkribblColor.White,
+    secondary = SkribblColor.Green,
+    onSecondary = SkribblColor.Black
 )
 
 @Composable
