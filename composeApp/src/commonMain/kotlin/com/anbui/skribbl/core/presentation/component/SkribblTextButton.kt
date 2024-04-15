@@ -13,7 +13,9 @@ import androidx.compose.ui.unit.dp
 import com.anbui.skribbl.core.presentation.theme.SkribblColor
 import com.anbui.skribbl.core.presentation.theme.SpaceTiny
 import com.anbui.skribbl.core.presentation.theme.debounceClickable
+import io.github.anbuiii.compostory.annotation.Compostory
 
+@Compostory
 @Composable
 fun SkribblTextButton(
     text: String,

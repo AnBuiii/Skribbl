@@ -1,9 +1,12 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinCompile
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.serialization)
     alias(libs.plugins.detekt)
+    id("com.google.devtools.ksp") version "1.9.23-1.0.19"
 }
 
 kotlin {
@@ -48,38 +51,41 @@ kotlin {
 
 
 
-        commonMain.dependencies {
-            api(libs.koin.core)
-            api(libs.koin.compose)
+        val commonMain by getting {
+            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+            dependencies {
+                api(libs.koin.core)
+                api(libs.koin.compose)
 
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material)
-            implementation(compose.material3)
-            implementation(compose.ui)
-            implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material)
+                implementation(compose.material3)
+                implementation(compose.ui)
+                implementation(compose.components.resources)
+                implementation(compose.components.uiToolingPreview)
 
-            implementation(libs.voyager.navigator)
-            implementation(libs.voyager.bottomSheetNavigator)
-            implementation(libs.voyager.transitions)
-            implementation(libs.voyager.tabNavigator)
-            implementation(libs.voyager.koin)
-            implementation(libs.stately.common) // for voyager koin error when build ios
+                implementation(libs.voyager.navigator)
+                implementation(libs.voyager.bottomSheetNavigator)
+                implementation(libs.voyager.transitions)
+                implementation(libs.voyager.tabNavigator)
+                implementation(libs.voyager.koin)
+                implementation(libs.stately.common) // for voyager koin error when build ios
 
-            api(libs.napier)
+                api(libs.napier)
 
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.client.serialization)
-            implementation(libs.ktor.client.logging)
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.ktor.client.serialization)
+                implementation(libs.ktor.client.logging)
 
-            api(libs.multiplatformSettings.noArg)
-            api(libs.multiplatformSettings.coroutines)
+                api(libs.multiplatformSettings.noArg)
+                api(libs.multiplatformSettings.coroutines)
+                implementation(libs.kotlinx.datetime)
 
-            implementation(libs.kotlinx.datetime)
-
-            implementation(libs.arrow.core)
+                implementation(libs.arrow.core)
+                implementation("io.github.anbuiii.compostory:compostory-annotations:0.0.1")
+            }
         }
 
         iosMain.dependencies {
@@ -124,10 +130,18 @@ android {
     }
 }
 
-
-tasks.named("assemble").configure {
-    dependsOn("detekt")
+dependencies {
+    add("kspCommonMainMetadata","io.github.anbuiii.compostory:compostory-compiler:0.0.1")
 }
+tasks.withType<KotlinCompile<*>>().configureEach {
+    if (name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
+}
+
+//tasks.named("assemble").configure {
+//    dependsOn("detekt")
+//}
 
 
 detekt {

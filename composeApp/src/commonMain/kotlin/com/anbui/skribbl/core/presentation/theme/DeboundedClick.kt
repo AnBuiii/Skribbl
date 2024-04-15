@@ -13,7 +13,6 @@ import androidx.compose.ui.util.fastForEach
 import com.anbui.skribbl.platform.Platform
 import kotlinx.datetime.Clock
 
-
 private const val DEBOUNCE_TIME_MILLIS = 1000L
 
 internal interface EventProcessor {
@@ -30,7 +29,6 @@ internal interface EventProcessor {
         }
     }
 }
-
 
 private class EventProcessorImpl : EventProcessor {
     private val now: Long
@@ -94,20 +92,17 @@ class DebounceImpl : Debounce {
     }
 }
 
-
 fun Modifier.debounceClick(
     id: String = Platform.INSTANCE.getRandomUUID()
 ) = composed {
     Modifier.pointerInput(Unit) {
         detectTapGestures {
-
         }
         awaitEachGesture {
             do {
                 val event = awaitPointerEvent()
                 event.changes.fastForEach { it.consume() }
             } while (event.changes.fastAny { it.pressed })
-
         }
 
 //        awaitPointerEventScope {

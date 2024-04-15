@@ -7,7 +7,6 @@ import org.jetbrains.compose.resources.Font
 import skribbl.composeapp.generated.resources.Res
 import skribbl.composeapp.generated.resources.handwriting
 
-
 object Fonts {
     @Composable
     @OptIn(ExperimentalResourceApi::class)

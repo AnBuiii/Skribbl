@@ -26,7 +26,3 @@ data class GameError(
         }
     }
 }
-
-
-
-

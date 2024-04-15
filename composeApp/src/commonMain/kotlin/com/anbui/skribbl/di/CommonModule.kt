@@ -35,9 +35,7 @@ import kotlinx.coroutines.runBlocking
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-
 fun commonModule(): Module = module {
-
     // HttpClient
     single<HttpClient> {
         HttpClient(Platform.INSTANCE.getEngine()) {
@@ -74,7 +72,6 @@ fun commonModule(): Module = module {
             val settingRepository = get<SettingRepository>()
             settingRepository.getClientId()
         }
-
     }
 
     single<DispatcherProvider> {

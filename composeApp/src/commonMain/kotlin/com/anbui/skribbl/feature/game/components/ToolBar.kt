@@ -29,6 +29,5 @@ fun ToolBar(
         IconButton(onClick = onUndo) {
             Icon(Icons.AutoMirrored.Default.ArrowBack, "")
         }
-
     }
 }

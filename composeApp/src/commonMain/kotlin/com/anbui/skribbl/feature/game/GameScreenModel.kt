@@ -98,7 +98,6 @@ class GameScreenModel(
 
     private var drawPlayer = ""
 
-
     private val _timer = MutableStateFlow("0")
     val time = _timer.asStateFlow()
 
@@ -158,7 +157,6 @@ class GameScreenModel(
                     socketService.send(drawData)
                     _drawingPath.update { emptyList() }
                 }
-
             }
 
             is DrawEvent.OnDraw -> {
@@ -230,7 +228,6 @@ class GameScreenModel(
             }
 
             else -> {
-
             }
         }
     }
@@ -266,11 +263,9 @@ class GameScreenModel(
                     }
 
                     else -> {
-
                     }
                 }
             }
-
         }
     }
 
@@ -316,7 +311,6 @@ class GameScreenModel(
                         }
                         _timer.update { (data.timeStamp / 1000).toString() }
                         Napier.d { "Phase: ${phase.value}, time: ${_timer.value}" }
-
                     }
 
                     is ChatMessage -> {
@@ -338,7 +332,7 @@ class GameScreenModel(
     override fun onDispose() {
         super.onDispose()
 
-        //?
+        // ?
         screenModelScope.launch {
             Napier.d { "dispose" }
             socketService.send(Disconnect())

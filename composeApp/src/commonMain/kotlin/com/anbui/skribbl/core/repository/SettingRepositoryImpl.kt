@@ -26,7 +26,6 @@ class SettingRepositoryImpl(
         return newClientId
     }
 
-
     override fun setName(value: String) {
         settingManager.setString(SettingManager.PLAYER_NAME, value)
     }

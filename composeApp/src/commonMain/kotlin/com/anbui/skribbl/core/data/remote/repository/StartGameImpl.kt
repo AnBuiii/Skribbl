@@ -82,7 +82,7 @@ class StartGameImpl(
             val body = response.body<List<RoomResponse>>()
             if (response.status != HttpStatusCode.OK) {
                 Resource.Error(null, getString(Res.string.error_unknown))
-            } else  {
+            } else {
                 Resource.Success(body)
             }
         } catch (_: IOException) {
@@ -92,4 +92,3 @@ class StartGameImpl(
         }
     }
 }
-

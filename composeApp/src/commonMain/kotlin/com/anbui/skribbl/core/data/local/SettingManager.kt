@@ -26,5 +26,4 @@ class SettingManager(
         const val PLAYER_NAME = "playerName"
         const val ROOM_NAME = "roomName"
     }
-
 }

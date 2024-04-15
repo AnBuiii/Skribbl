@@ -40,7 +40,6 @@ class SelectRoomScreenModel(
     }
 
     fun searchRoom() {
-
         screenModelScope.launch {
             val resource = startGameService.getRooms(_roomQuery.value)
 

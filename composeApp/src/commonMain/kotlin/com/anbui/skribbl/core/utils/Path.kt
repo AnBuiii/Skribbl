@@ -24,7 +24,6 @@ fun List<Offset>.toPath(): Path {
     return result
 }
 
-
 fun List<DrawData>.toPath(): SkribblPath {
     val path = Path()
     if (size >= 2) {

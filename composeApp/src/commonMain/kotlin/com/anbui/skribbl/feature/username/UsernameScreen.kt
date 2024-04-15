@@ -55,7 +55,6 @@ class UsernameScreen : Screen {
     }
 }
 
-
 @Composable
 fun UsernameScreenContent(
     username: String,
@@ -67,7 +66,6 @@ fun UsernameScreenContent(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         Text(
             stringResource(Res.string.app_name),
             style = MaterialTheme.typography.headlineLarge
@@ -93,7 +91,8 @@ fun UsernameScreenContent(
             SkribblTextButton(
                 stringResource(Res.string.next),
                 modifier = Modifier.align(Alignment.End).width(72.dp),
-                onClick = debouncedClick { onNext() })
+                onClick = debouncedClick { onNext() }
+            )
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.anbui.skribbl.core.presentation.component
 
-
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField

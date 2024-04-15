@@ -31,7 +31,6 @@ fun SkribblCanvas(
                 }
             }
     ) {
-
         drawnPath.forEach {
             drawPath(
                 it.path,

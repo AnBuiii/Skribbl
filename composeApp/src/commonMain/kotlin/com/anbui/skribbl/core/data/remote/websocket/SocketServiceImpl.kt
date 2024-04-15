@@ -95,7 +95,6 @@ class SocketServiceImpl(
         }
         if (session != null) {
             session?.send(Frame.Text(frame))
-
         } else {
             Napier.d { "session is null" }
         }
